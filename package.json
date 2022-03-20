@@ -15,7 +15,13 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "check-types": "tsc --pretty --noEmit",
+    "check-lint": "eslint . --ext ts --ext tsx --ext js",
+    "test-all": "yarn check-lint && yarn check-types && yarn build"
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": "eslint --cache --fix"
   },
   "browserslist": {
     "production": [
@@ -43,6 +49,8 @@
     "eslint-plugin-jsx-a11y": "^6.5.1",
     "eslint-plugin-react": "^7.29.4",
     "eslint-plugin-react-hooks": "^4.3.0",
+    "husky": "^7.0.4",
+    "lint-staged": "^12.3.7",
     "typescript": "^4.6.2"
   }
 }
