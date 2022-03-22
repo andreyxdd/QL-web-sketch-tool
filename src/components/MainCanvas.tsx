@@ -1,13 +1,13 @@
 import React from 'react';
 import { Canvas } from '@react-three/fiber';
-import Controls from './Controls';
+import ControlsAndCamera from './ControlsAndCamera';
 import Grid from './Grid';
 
 interface ICanvas {}
 
 const MainCanvas: React.FC<ICanvas> = () => (
-  <Canvas camera={{ position: [2, 2, 2] }}>
-    <Controls />
+  <Canvas>
+    <ControlsAndCamera />
     <Grid />
   </Canvas>
 );

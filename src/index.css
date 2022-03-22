@@ -10,11 +10,11 @@ html, body, #root {
   -moz-osx-font-smoothing: grayscale;
 }
 
+canvas {
+  background: #041830;
+}
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
-}
-
-canvas {
-  background: #041830;
 }
