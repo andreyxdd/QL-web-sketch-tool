@@ -1,5 +1,5 @@
 import React from 'react';
-import { useThree } from '@react-three/fiber';
+import { useThree, useFrame } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
 import shallow from 'zustand/shallow';
 import useStore, { IStore } from '../hooks/useStore';
@@ -12,17 +12,21 @@ const ControlsAndCamera = (): JSX.Element => {
     shallow,
   );
 
+  useFrame(() => controlsRef.current.update());
+
   React.useEffect(() => {
-    camera.position.set(position[0], position[1], position[2]);
+    controlsRef.current.reset();
     controlsRef.current.target.set(0, 0, 0);
+    camera.position.set(position[0], position[1], position[2]);
   }, [isSketchView, position, camera]);
 
   return (
     <OrbitControls
       ref={controlsRef}
+      camera={camera}
       maxPolarAngle={Math.PI / 2}
       enableRotate={!isSketchView}
-      enableDamping={false}
+      enableDamping
     />
   );
 };
