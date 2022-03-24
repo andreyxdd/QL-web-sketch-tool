@@ -3,13 +3,13 @@ import { Canvas } from '@react-three/fiber';
 import ControlsAndCamera from './ControlsAndCamera';
 import Grid from './Grid';
 
-interface ICanvas {}
+interface ICanvasBase {}
 
-const MainCanvas: React.FC<ICanvas> = () => (
-  <Canvas>
+const CanvasBase: React.FC<ICanvasBase> = () => (
+  <Canvas className='grow'>
     <ControlsAndCamera />
     <Grid />
   </Canvas>
 );
 
-export default MainCanvas;
+export default CanvasBase;
