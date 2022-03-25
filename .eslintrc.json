@@ -25,7 +25,7 @@
         "import/extensions": [
             "error",
             "ignorePackages",
-            { "ts": "never", "tsx": "never" }
+            { "ts": "never", "tsx": "never", "js": "never", "jsx": "never" }
         ],
         "quotes": ["error", "single"],
         "jsx-quotes": ["error", "prefer-single"],
@@ -50,11 +50,12 @@
                 "namedComponents": ["function-declaration", "function-expression","arrow-function"],
                 "unnamedComponents": ["function-expression","arrow-function"]
             }
-        ]
+        ],
+        "react/require-default-props": [0]
     },
     "overrides": [
         {
-            "files": ["*.ts", "*.tsx"],
+            "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
             "rules": {
                 "no-undef": "off"
             }

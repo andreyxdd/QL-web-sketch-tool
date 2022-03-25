@@ -2,6 +2,7 @@ import create from 'zustand';
 
 interface IGrid{
   showAxesHelper: boolean;
+  showGrid: boolean;
   size: number;
   divisions: number;
 }
@@ -29,6 +30,7 @@ export interface IStore extends IState{
 const initialState: IState = {
   grid: {
     showAxesHelper: true,
+    showGrid: true,
     size: 10,
     divisions: 10,
   },

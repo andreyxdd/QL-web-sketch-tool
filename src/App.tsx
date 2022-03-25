@@ -1,8 +1,7 @@
 import React from 'react';
 import tw from 'tailwind-styled-components';
 import CanvasBase from './components/CanvasBase';
-// import ControlNavbarButton from './components/SideNavbar/ControlNavbarButton';
-// import SideNavbar from './components/SideNavbar/SideNavbar';
+import ToolsNavbar from './components/ToolsNavbar';
 
 const Container = tw.div`
   flex
@@ -13,7 +12,7 @@ const Container = tw.div`
 function App(): JSX.Element {
   return (
     <Container>
-      <div className='bg-green-300'>Navbar</div>
+      <ToolsNavbar />
       <CanvasBase />
     </Container>
   );
