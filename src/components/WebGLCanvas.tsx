@@ -3,13 +3,14 @@ import { Canvas } from '@react-three/fiber';
 import ControlsAndCamera from './ControlsAndCamera';
 import Grid from './Grid';
 
-interface ICanvasBase {}
+interface IWebGLCanvas {}
 
-const CanvasBase: React.FC<ICanvasBase> = () => (
+const WebGLCanvas: React.FC<IWebGLCanvas> = () => (
   <Canvas className='grow'>
+    <color attach='background' args={['#041830']} />
     <ControlsAndCamera />
     <Grid />
   </Canvas>
 );
 
-export default CanvasBase;
+export default WebGLCanvas;

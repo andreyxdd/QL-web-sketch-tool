@@ -1,6 +1,6 @@
 import React from 'react';
 import tw from 'tailwind-styled-components';
-import CanvasBase from './components/CanvasBase';
+import WebGLCanvas from './components/WebGLCanvas';
 import ToolsNavbar from './components/ToolsNavbar';
 
 const Container = tw.div`
@@ -13,7 +13,7 @@ function App(): JSX.Element {
   return (
     <Container>
       <ToolsNavbar />
-      <CanvasBase />
+      <WebGLCanvas />
     </Container>
   );
 }
