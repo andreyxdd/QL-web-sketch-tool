@@ -1,7 +1,7 @@
 import React from 'react';
 import tw from 'tailwind-styled-components';
 import shallow from 'zustand/shallow';
-import useStore, { IStore } from '../hooks/useStore';
+import useUIStore, { IUIStore } from '../hooks/useUIStore';
 import IconButton from './IconButton';
 import { IconGrid, IconSketch, IconXYZ } from './Icons';
 
@@ -21,24 +21,24 @@ const ToolsNavbar: React.FC<IToolsNavbar> = () => {
   const [
     grid,
     setGrid,
-    sketch,
-    setSketch,
-  ] = useStore((state: IStore) => (
+    sketchView,
+    setSketchView,
+  ] = useUIStore((state: IUIStore) => (
     [
       state.grid,
       state.setGrid,
-      state.sketch,
-      state.setSketch,
+      state.sketchView,
+      state.setSketchView,
     ]
   ), shallow);
   const { showAxesHelper, showGrid } = grid;
-  const { isSketchView } = sketch;
+  const { isSketchView } = sketchView;
 
   return (
     <NavContainer>
       <IconButton
         handleClick={() => {
-          setSketch({ ...sketch, isSketchView: !isSketchView });
+          setSketchView({ ...sketchView, isSketchView: !isSketchView });
         }}
         active={isSketchView}
         isFirst

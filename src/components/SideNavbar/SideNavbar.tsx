@@ -1,6 +1,6 @@
 import React from 'react';
 import shallow from 'zustand/shallow';
-import useStore, { IStore } from '../../hooks/useStore';
+import useUIStore, { IUIStore } from '../../hooks/useUIStore';
 
 import './styles.css';
 
@@ -10,22 +10,22 @@ const SideNavbar: React.FC<ISideNavbar> = () => {
   const [
     grid,
     setGrid,
-    sketch,
-    setSketch,
+    sketchView,
+    setSketchView,
     sideNavbarOpened,
     setSideNavbarOpened,
-  ] = useStore((state: IStore) => (
+  ] = useUIStore((state: IUIStore) => (
     [
       state.grid,
       state.setGrid,
-      state.sketch,
-      state.setSketch,
+      state.sketchView,
+      state.setSketchView,
       state.sideNavbarOpened,
       state.setSideNavbarOpened,
     ]
   ), shallow);
   const { showAxesHelper } = grid;
-  const { isSketchView } = sketch;
+  const { isSketchView } = sketchView;
 
   return (
     <div
@@ -52,7 +52,7 @@ const SideNavbar: React.FC<ISideNavbar> = () => {
         type='button'
         className='sideNavBtn'
         onClick={() => {
-          setSketch({ ...sketch, isSketchView: !isSketchView });
+          setSketchView({ ...sketchView, isSketchView: !isSketchView });
         }}
       >
         {`${isSketchView ? 'Hide' : 'Show'} sketch view`}

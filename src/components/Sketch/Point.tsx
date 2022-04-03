@@ -1,17 +1,32 @@
 import React from 'react';
 import { Circle } from '@react-three/drei';
 import { useDrag } from '@use-gesture/react';
+import shallow from 'zustand/shallow';
 import { SketchPlane, helperPoint, arrayToVector3 } from '../../utils/geometryHelpers';
+import useSketchStore, { ISketchStore } from '../../hooks/useSketchStore';
 
-interface IPoint {}
+interface IPoint {
+  id: number;
+  position: Array<number>;
+}
 
-const Point: React.FC<IPoint> = () => {
+const Point: React.FC<IPoint> = ({ id, position }) => {
+  const [vertices, setVertices] = useSketchStore(
+    (state: ISketchStore) => [state.vertices, state.setVertices],
+    shallow,
+  );
+
   const [hovered, setHovered] = React.useState(false);
-  const [position, setPosition] = React.useState([1, 0, 1]);
 
   const bind = useDrag(({ event }: any) => {
     event.ray.intersectPlane(SketchPlane, helperPoint);
-    setPosition((p) => [helperPoint.x, p[1], helperPoint.z]);
+
+    const vertexIndex = vertices.findIndex((v) => v.id === id);
+    vertices[vertexIndex].position = [
+      helperPoint.x, vertices[vertexIndex].position[1], helperPoint.z,
+    ];
+
+    setVertices([...vertices]);
   }, { pointerEvents: true });
 
   return (

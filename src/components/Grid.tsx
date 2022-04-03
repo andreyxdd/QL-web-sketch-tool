@@ -1,13 +1,13 @@
 import React from 'react';
-import useStore, { IStore } from '../hooks/useStore';
+import useUIStore, { IUIStore } from '../hooks/useUIStore';
 
 interface IGrid {}
 
 const Grid: React.FC<IGrid> = () => {
   const {
     showAxesHelper, showGrid, size, divisions,
-  } = useStore(
-    (state: IStore) => state.grid,
+  } = useUIStore(
+    (state: IUIStore) => state.grid,
   );
 
   return (

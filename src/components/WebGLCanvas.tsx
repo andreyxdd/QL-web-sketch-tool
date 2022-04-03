@@ -3,13 +3,13 @@ import { Canvas } from '@react-three/fiber';
 import ControlsAndCamera from './ControlsAndCamera';
 import Grid from './Grid';
 import Sketch from './Sketch/Sketch';
-import useStore, { IStore } from '../hooks/useStore';
+import useUIStore, { IUIStore } from '../hooks/useUIStore';
 
 interface IWebGLCanvas {}
 
 const WebGLCanvas: React.FC<IWebGLCanvas> = () => {
-  const isSketchView = useStore(
-    (state: IStore) => state.sketch.isSketchView,
+  const isSketchView = useUIStore(
+    (state: IUIStore) => state.sketchView.isSketchView,
   );
 
   return (

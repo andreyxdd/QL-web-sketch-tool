@@ -7,22 +7,22 @@ interface IGrid{
   divisions: number;
 }
 
-interface ISketch{
+interface ISketchView{
   isSketchView: boolean;
   yCoordinate: number;
 }
 
 interface IState {
   grid: IGrid;
-  sketch: ISketch;
+  sketchView: ISketchView;
   cameraPosition: [number, number, number];
   sideNavbarOpened: boolean;
 }
 
 /* eslint-disable no-unused-vars */
-export interface IStore extends IState{
+export interface IUIStore extends IState{
   setGrid: (val: IGrid) => void;
-  setSketch: (val: ISketch) => void;
+  setSketchView: (val: ISketchView) => void;
   setSideNavbarOpened: (val: boolean) => void;
 }
 /* eslint-enable no-unused-vars */
@@ -34,7 +34,7 @@ const initialState: IState = {
     size: 10,
     divisions: 10,
   },
-  sketch: {
+  sketchView: {
     isSketchView: false,
     yCoordinate: 10,
   },
@@ -42,24 +42,21 @@ const initialState: IState = {
   sideNavbarOpened: false,
 };
 
-const useStore = create<IStore>((set: any) => ({
-  grid: initialState.grid,
+const useUIStore = create<IUIStore>((set: any) => ({
+  ...initialState,
   setGrid: (newGrid: IGrid) => set(
     () => ({ grid: newGrid }),
   ),
-  sketch: initialState.sketch,
-  setSketch: (newSketch: ISketch) => set(
+  setSketchView: (newSketchView: ISketchView) => set(
     () => ({
-      sketch: newSketch,
-      cameraPosition: newSketch.isSketchView
-        ? [0, newSketch.yCoordinate, 0] : initialState.cameraPosition,
+      sketchView: newSketchView,
+      cameraPosition: newSketchView.isSketchView
+        ? [0, newSketchView.yCoordinate, 0] : initialState.cameraPosition,
     }),
   ),
-  cameraPosition: initialState.cameraPosition,
-  sideNavbarOpened: initialState.sideNavbarOpened,
   setSideNavbarOpened: (value: boolean) => set(
     () => ({ sideNavbarOpened: value }),
   ),
 }));
 
-export default useStore;
+export default useUIStore;

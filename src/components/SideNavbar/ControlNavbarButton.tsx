@@ -1,14 +1,14 @@
 import React from 'react';
 import shallow from 'zustand/shallow';
-import useStore, { IStore } from '../../hooks/useStore';
+import useUIStore, { IUIStore } from '../../hooks/useUIStore';
 
 import './styles.css';
 
 interface IControlNavbarButton{}
 
 const ControlNavbarButton: React.FC<IControlNavbarButton> = () => {
-  const [sideNavbarOpened, setSideNavbarOpened] = useStore(
-    (state: IStore) => [state.sideNavbarOpened, state.setSideNavbarOpened],
+  const [sideNavbarOpened, setSideNavbarOpened] = useUIStore(
+    (state: IUIStore) => [state.sideNavbarOpened, state.setSideNavbarOpened],
     shallow,
   );
   return (
