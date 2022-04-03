@@ -2,7 +2,7 @@ import React from 'react';
 import { Circle } from '@react-three/drei';
 import { useDrag } from '@use-gesture/react';
 import shallow from 'zustand/shallow';
-import { SketchPlane, helperPoint, arrayToVector3 } from '../../utils/geometryHelpers';
+import { helperPlane, helperPoint, arrayToVector3 } from '../../utils/geometryHelpers';
 import useSketchStore, { ISketchStore } from '../../hooks/useSketchStore';
 
 interface IPoint {
@@ -19,7 +19,7 @@ const Point: React.FC<IPoint> = ({ id, position }) => {
   const [hovered, setHovered] = React.useState(false);
 
   const bind = useDrag(({ event }: any) => {
-    event.ray.intersectPlane(SketchPlane, helperPoint);
+    event.ray.intersectPlane(helperPlane, helperPoint);
 
     const vertexIndex = vertices.findIndex((v) => v.id === id);
     vertices[vertexIndex].position = [

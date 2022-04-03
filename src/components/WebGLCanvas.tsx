@@ -3,6 +3,7 @@ import { Canvas } from '@react-three/fiber';
 import ControlsAndCamera from './ControlsAndCamera';
 import Grid from './Grid';
 import Sketch from './Sketch/Sketch';
+import SketchPlane from './Sketch/SketchPlane';
 import useUIStore, { IUIStore } from '../hooks/useUIStore';
 
 interface IWebGLCanvas {}
@@ -17,7 +18,13 @@ const WebGLCanvas: React.FC<IWebGLCanvas> = () => {
       <color attach='background' args={['#041830']} />
       <ControlsAndCamera />
       <Grid />
-      {isSketchView && <Sketch />}
+      {isSketchView
+        && (
+          <>
+            <Sketch />
+            <SketchPlane />
+          </>
+        )}
     </Canvas>
   );
 };

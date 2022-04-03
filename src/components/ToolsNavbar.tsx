@@ -2,6 +2,7 @@ import React from 'react';
 import tw from 'tailwind-styled-components';
 import shallow from 'zustand/shallow';
 import useUIStore, { IUIStore } from '../hooks/useUIStore';
+import useSketchStore, { ISketchStore } from '../hooks/useSketchStore';
 import IconButton from './IconButton';
 import { IconGrid, IconSketch, IconXYZ } from './Icons';
 
@@ -34,6 +35,10 @@ const ToolsNavbar: React.FC<IToolsNavbar> = () => {
   const { showAxesHelper, showGrid } = grid;
   const { isSketchView } = sketchView;
 
+  const createNewVertex = useSketchStore(
+    (state: ISketchStore) => (state.createNewVertex),
+  );
+
   return (
     <NavContainer>
       <IconButton
@@ -60,6 +65,14 @@ const ToolsNavbar: React.FC<IToolsNavbar> = () => {
         active={showAxesHelper}
       >
         <IconXYZ />
+      </IconButton>
+      <IconButton
+        handleClick={() => {
+          createNewVertex();
+        }}
+        active={false}
+      >
+        <p>Point</p>
       </IconButton>
     </NavContainer>
   );

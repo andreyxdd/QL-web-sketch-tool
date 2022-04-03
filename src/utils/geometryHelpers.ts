@@ -16,6 +16,6 @@ export function arrayToVector2(array: Array<number>): THREE.Vector2 | undefined 
   throw new Error('THREE.Vector2 can only be of size 2');
 }
 
-export const SketchPlane = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0);
+export const helperPlane = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0);
 
 export const helperPoint = new THREE.Vector3();
