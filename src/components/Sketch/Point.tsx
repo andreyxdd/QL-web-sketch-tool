@@ -29,6 +29,10 @@ const Point: React.FC<IPoint> = ({ id, position }) => {
     setVertices([...vertices]);
   }, { pointerEvents: true });
 
+  React.useEffect(() => {
+    document.body.style.cursor = hovered ? 'crosshair' : 'auto';
+  }, [hovered]);
+
   return (
     // @ts-ignore
     <Circle
