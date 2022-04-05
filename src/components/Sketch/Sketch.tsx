@@ -1,5 +1,6 @@
 import React from 'react';
 import Point from './Point';
+import SketchLine from './SketchLine';
 import useSketchStore, { ISketchStore } from '../../hooks/useSketchStore';
 
 interface ISketchJSX {}
@@ -18,6 +19,7 @@ const Sketch: React.FC<ISketchJSX> = () => {
           position={v.position}
         />
       ))}
+      <SketchLine />
     </>
   );
 };
