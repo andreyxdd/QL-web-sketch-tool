@@ -4,13 +4,13 @@ import ControlsAndCamera from './ControlsAndCamera';
 import Grid from './Grid';
 import Sketch from './Sketch/Sketch';
 import SketchPlane from './Sketch/SketchPlane';
-import useUIStore, { IUIStore } from '../hooks/useUIStore';
+import useGlobal, { IGlobalStore } from '../hooks/useGlobal';
 
 interface IWebGLCanvas {}
 
 const WebGLCanvas: React.FC<IWebGLCanvas> = () => {
-  const isSketchView = useUIStore(
-    (state: IUIStore) => state.sketchView.isSketchView,
+  const isSketchView = useGlobal(
+    (state: IGlobalStore) => state.sketchView.isSketchView,
   );
 
   return (

@@ -1,14 +1,12 @@
 import React from 'react';
 import SketchPoint from './SketchPoint';
 import SketchLine from './SketchLine';
-import useSketchStore, { ISketchStore } from '../../hooks/useSketchStore';
+import useSketch, { ISketchStore } from '../../hooks/useSketch';
 
 interface ISketchJSX {}
 
 const Sketch: React.FC<ISketchJSX> = () => {
-  const vertices = useSketchStore(
-    (state: ISketchStore) => state.vertices,
-  );
+  const vertices = useSketch((state: ISketchStore) => state.vertices);
 
   return (
     <>

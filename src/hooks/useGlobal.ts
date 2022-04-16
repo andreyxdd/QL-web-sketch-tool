@@ -20,7 +20,7 @@ interface IState {
 }
 
 /* eslint-disable no-unused-vars */
-export interface IUIStore extends IState{
+export interface IGlobalStore extends IState{
   setGrid: (val: IGrid) => void;
   setSketchView: (val: ISketchView) => void;
   setSideNavbarOpened: (val: boolean) => void;
@@ -42,7 +42,7 @@ const initialState: IState = {
   sideNavbarOpened: false,
 };
 
-const useUIStore = create<IUIStore>((set: any) => ({
+const useGlobal = create<IGlobalStore>((set: any) => ({
   ...initialState,
   setGrid: (newGrid: IGrid) => set(
     () => ({ grid: newGrid }),
@@ -59,4 +59,4 @@ const useUIStore = create<IUIStore>((set: any) => ({
   ),
 }));
 
-export default useUIStore;
+export default useGlobal;

@@ -2,15 +2,15 @@ import React from 'react';
 import { Plane } from '@react-three/drei';
 import { useMove } from '@use-gesture/react';
 import shallow from 'zustand/shallow';
-import useSketchStore, { ISketchStore } from '../../hooks/useSketchStore';
+import useSketch, { ISketchStore } from '../../hooks/useSketch';
 import { helperPlane, helperPoint } from '../../utils/geometryHelpers';
 
 interface ISketchPlane {}
 
 const SketchPlane: React.FC<ISketchPlane> = () => {
-  const [setVertices, vertices, creatingVertex, stopCreatingVertex] = useSketchStore(
+  const [updateVertexPosition, vertices, creatingVertex, stopCreatingVertex] = useSketch(
     (state: ISketchStore) => [
-      state.setVertices,
+      state.updateVertexPosition,
       state.vertices,
       state.creatingVertex,
       state.stopCreatingVertex,
@@ -21,18 +21,14 @@ const SketchPlane: React.FC<ISketchPlane> = () => {
   const bind = useMove(({ event }: any) => {
     event.ray.intersectPlane(helperPlane, helperPoint);
 
-    const vertexIndex = vertices.length - 1;
-    vertices[vertexIndex].position = [
-      helperPoint.x, vertices[vertexIndex].position[1], helperPoint.z,
-    ];
-
-    setVertices([...vertices]);
+    const vertexIndex = vertices.length;
+    updateVertexPosition(vertexIndex, helperPoint);
   }, { enabled: creatingVertex });
 
   return (
     // @ts-ignore
     <Plane
-    // eslint-disable-next-line react/jsx-props-no-spreading
+      // eslint-disable-next-line react/jsx-props-no-spreading
       {...bind()}
       args={[10, 10]}
       rotation={[-Math.PI / 2, 0, 0]}

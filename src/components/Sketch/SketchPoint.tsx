@@ -1,32 +1,23 @@
 import React from 'react';
 import { Circle } from '@react-three/drei';
 import { useDrag } from '@use-gesture/react';
-import shallow from 'zustand/shallow';
-import { helperPlane, helperPoint, arrayToVector3 } from '../../utils/geometryHelpers';
-import useSketchStore, { ISketchStore } from '../../hooks/useSketchStore';
+import { Vector3 } from 'three';
+import { helperPlane, helperPoint } from '../../utils/geometryHelpers';
+import useSketch, { ISketchStore } from '../../hooks/useSketch';
 
 interface ISketchPoint {
   id: number;
-  position: Array<number>;
+  position: Vector3;
 }
 
 const SketchPoint: React.FC<ISketchPoint> = ({ id, position }) => {
-  const [vertices, setVertices] = useSketchStore(
-    (state: ISketchStore) => [state.vertices, state.setVertices],
-    shallow,
-  );
+  const [updateVertexPosition] = useSketch((state: ISketchStore) => [state.updateVertexPosition]);
 
   const [hovered, setHovered] = React.useState(false);
 
   const bind = useDrag(({ event }: any) => {
     event.ray.intersectPlane(helperPlane, helperPoint);
-
-    const vertexIndex = vertices.findIndex((v) => v.id === id);
-    vertices[vertexIndex].position = [
-      helperPoint.x, vertices[vertexIndex].position[1], helperPoint.z,
-    ];
-
-    setVertices([...vertices]);
+    updateVertexPosition(id, helperPoint);
   }, { pointerEvents: true });
 
   React.useEffect(() => {
@@ -38,7 +29,7 @@ const SketchPoint: React.FC<ISketchPoint> = ({ id, position }) => {
     <Circle
       // eslint-disable-next-line react/jsx-props-no-spreading
       {...bind()}
-      position={arrayToVector3(position)}
+      position={position}
       rotation={[-Math.PI / 2, 0, 0]}
       onPointerOver={() => setHovered(true)}
       onPointerOut={() => setHovered(false)}

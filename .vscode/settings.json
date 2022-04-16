@@ -2,7 +2,7 @@
   "files.autoSave": "onFocusChange",
   "editor.fontLigatures": true,
   "editor.fontFamily": "Fira Code SemiBold, Consolas, 'Courier New', monospace",
-  "editor.fontSize": 20,
+  "editor.fontSize": 18,
   "editor.wordWrap": "wordWrapColumn",
   "editor.tabSize": 2,
   "editor.codeActionsOnSave": { "source.fixAll.eslint": true },

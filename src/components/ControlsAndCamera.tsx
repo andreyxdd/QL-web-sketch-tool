@@ -2,13 +2,13 @@ import React from 'react';
 import { useThree, useFrame } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
 import shallow from 'zustand/shallow';
-import useUIStore, { IUIStore } from '../hooks/useUIStore';
+import useGlobal, { IGlobalStore } from '../hooks/useGlobal';
 
 const ControlsAndCamera = (): JSX.Element => {
   const { camera } = useThree();
   const controlsRef = React.useRef<any>();
-  const [{ isSketchView }, position] = useUIStore(
-    (state: IUIStore) => [state.sketchView, state.cameraPosition],
+  const [{ isSketchView }, position] = useGlobal(
+    (state: IGlobalStore) => [state.sketchView, state.cameraPosition],
     shallow,
   );
 

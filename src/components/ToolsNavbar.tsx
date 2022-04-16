@@ -1,8 +1,8 @@
 import React from 'react';
 import tw from 'tailwind-styled-components';
 import shallow from 'zustand/shallow';
-import useUIStore, { IUIStore } from '../hooks/useUIStore';
-import useSketchStore, { ISketchStore } from '../hooks/useSketchStore';
+import useGlobal, { IGlobalStore } from '../hooks/useGlobal';
+import useSketch, { ISketchStore } from '../hooks/useSketch';
 import IconButton from './IconButton';
 import { IconGrid, IconSketch, IconXYZ } from './Icons';
 
@@ -24,7 +24,7 @@ const ToolsNavbar: React.FC<IToolsNavbar> = () => {
     setGrid,
     sketchView,
     setSketchView,
-  ] = useUIStore((state: IUIStore) => (
+  ] = useGlobal((state: IGlobalStore) => (
     [
       state.grid,
       state.setGrid,
@@ -35,9 +35,7 @@ const ToolsNavbar: React.FC<IToolsNavbar> = () => {
   const { showAxesHelper, showGrid } = grid;
   const { isSketchView } = sketchView;
 
-  const createNewVertex = useSketchStore(
-    (state: ISketchStore) => (state.createNewVertex),
-  );
+  const createNewVertex = useSketch((state: ISketchStore) => (state.createNewVertex));
 
   return (
     <NavContainer>

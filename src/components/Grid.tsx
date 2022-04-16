@@ -1,14 +1,12 @@
 import React from 'react';
-import useUIStore, { IUIStore } from '../hooks/useUIStore';
+import useGlobal, { IGlobalStore } from '../hooks/useGlobal';
 
 interface IGrid {}
 
 const Grid: React.FC<IGrid> = () => {
   const {
     showAxesHelper, showGrid, size, divisions,
-  } = useUIStore(
-    (state: IUIStore) => state.grid,
-  );
+  } = useGlobal((state: IGlobalStore) => state.grid);
 
   return (
     <>

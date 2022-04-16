@@ -1,6 +1,6 @@
 import React from 'react';
 import shallow from 'zustand/shallow';
-import useUIStore, { IUIStore } from '../../hooks/useUIStore';
+import useGlobal, { IGlobalStore } from '../../hooks/useGlobal';
 
 import './styles.css';
 
@@ -14,7 +14,7 @@ const SideNavbar: React.FC<ISideNavbar> = () => {
     setSketchView,
     sideNavbarOpened,
     setSideNavbarOpened,
-  ] = useUIStore((state: IUIStore) => (
+  ] = useGlobal((state: IGlobalStore) => (
     [
       state.grid,
       state.setGrid,

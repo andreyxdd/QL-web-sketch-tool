@@ -1,14 +1,14 @@
 import React from 'react';
 import shallow from 'zustand/shallow';
-import useUIStore, { IUIStore } from '../../hooks/useUIStore';
+import useGlobal, { IGlobalStore } from '../../hooks/useGlobal';
 
 import './styles.css';
 
 interface IControlNavbarButton{}
 
 const ControlNavbarButton: React.FC<IControlNavbarButton> = () => {
-  const [sideNavbarOpened, setSideNavbarOpened] = useUIStore(
-    (state: IUIStore) => [state.sideNavbarOpened, state.setSideNavbarOpened],
+  const [sideNavbarOpened, setSideNavbarOpened] = useGlobal(
+    (state: IGlobalStore) => [state.sideNavbarOpened, state.setSideNavbarOpened],
     shallow,
   );
   return (
