@@ -26,6 +26,7 @@ const ControlsAndCamera = (): JSX.Element => {
       camera={camera}
       maxPolarAngle={Math.PI / 2}
       enableRotate={!isSketchView}
+      enableDamping={false}
     />
   );
 };

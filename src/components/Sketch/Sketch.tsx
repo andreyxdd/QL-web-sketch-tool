@@ -1,5 +1,5 @@
 import React from 'react';
-import Point from './Point';
+import SketchPoint from './SketchPoint';
 import SketchLine from './SketchLine';
 import useSketchStore, { ISketchStore } from '../../hooks/useSketchStore';
 
@@ -13,7 +13,7 @@ const Sketch: React.FC<ISketchJSX> = () => {
   return (
     <>
       {vertices.map((v) => (
-        <Point
+        <SketchPoint
           key={v.id}
           id={v.id}
           position={v.position}

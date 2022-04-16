@@ -5,12 +5,12 @@ import shallow from 'zustand/shallow';
 import { helperPlane, helperPoint, arrayToVector3 } from '../../utils/geometryHelpers';
 import useSketchStore, { ISketchStore } from '../../hooks/useSketchStore';
 
-interface IPoint {
+interface ISketchPoint {
   id: number;
   position: Array<number>;
 }
 
-const Point: React.FC<IPoint> = ({ id, position }) => {
+const SketchPoint: React.FC<ISketchPoint> = ({ id, position }) => {
   const [vertices, setVertices] = useSketchStore(
     (state: ISketchStore) => [state.vertices, state.setVertices],
     shallow,
@@ -49,4 +49,4 @@ const Point: React.FC<IPoint> = ({ id, position }) => {
   );
 };
 
-export default Point;
+export default SketchPoint;
