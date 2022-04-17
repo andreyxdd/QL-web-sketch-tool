@@ -55,10 +55,11 @@ const LineMeter: React.FC<ILineMeter> = ({ lineId, v1, v2 }) => {
         arrowColor, headLength, headWidth,
       ]}
       />
-      <arrowHelper args={[
-        arrowDirection.clone().negate(), lineOffsetMidPoint, lineLength / 2,
-        arrowColor, headLength, headWidth,
-      ]}
+      <arrowHelper
+        args={[
+          arrowDirection.clone().negate(), lineOffsetMidPoint, lineLength / 2,
+          arrowColor, headLength, headWidth,
+        ]}
       />
       <mesh position={lineOffsetMidPoint}>
         <MeterInput value={lineLength} lineId={lineId} />

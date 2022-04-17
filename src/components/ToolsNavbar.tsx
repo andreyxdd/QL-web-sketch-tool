@@ -25,7 +25,9 @@ const ToolsNavbar: React.FC<IToolsNavbar> = () => {
   const { showAxesHelper, showGrid } = grid;
   const { isSketchView } = sketchView;
 
-  const createNewVertex = useSketch((state: ISketchStore) => (state.createNewVertex));
+  const [createNewVertex, makeHorizontal, makeVertical] = useSketch((state: ISketchStore) => (
+    [state.createNewVertex, state.makeHorizontal, state.makeVertical]
+  ), shallow);
 
   return (
     <NavContainer>
@@ -61,6 +63,22 @@ const ToolsNavbar: React.FC<IToolsNavbar> = () => {
         active={false}
       >
         <p>Line</p>
+      </IconButton>
+      <IconButton
+        handleClick={() => {
+          makeHorizontal(1);
+        }}
+        active={false}
+      >
+        <p>Horiz</p>
+      </IconButton>
+      <IconButton
+        handleClick={() => {
+          makeVertical(1);
+        }}
+        active={false}
+      >
+        <p>Vertical</p>
       </IconButton>
     </NavContainer>
   );
