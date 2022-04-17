@@ -1,4 +1,5 @@
 import React from 'react';
+import shallow from 'zustand/shallow';
 import SketchPoint from './SketchPoint';
 import SketchLine from './SketchLine';
 import useSketch, { ISketchStore } from '../../hooks/useSketch';
@@ -6,7 +7,10 @@ import useSketch, { ISketchStore } from '../../hooks/useSketch';
 interface ISketchJSX {}
 
 const Sketch: React.FC<ISketchJSX> = () => {
-  const vertices = useSketch((state: ISketchStore) => state.vertices);
+  const [vertices, lines] = useSketch(
+    (state: ISketchStore) => [state.vertices, state.lines],
+    shallow,
+  );
 
   return (
     <>
@@ -17,7 +21,14 @@ const Sketch: React.FC<ISketchJSX> = () => {
           position={v.position}
         />
       ))}
-      <SketchLine />
+      {lines.map((line) => (
+        <SketchLine
+          key={line.id}
+          id={line.id}
+          v1={line.startVertex.position}
+          v2={line.endVertex.position}
+        />
+      ))}
     </>
   );
 };

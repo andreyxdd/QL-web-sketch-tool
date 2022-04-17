@@ -1,19 +1,24 @@
 import React from 'react';
 import { Line } from '@react-three/drei';
-import useSketch, { ISketchStore } from '../../hooks/useSketch';
+import { Vector3 } from 'three';
+import LineMeter from './LineMeter';
 
-interface ISketchLine {}
+interface ISketchLine {
+  id: number;
+  v1: Vector3;
+  v2: Vector3;
+}
 
-const SketchLine: React.FC<ISketchLine> = () => {
-  const vertices = useSketch((state: ISketchStore) => state.vertices);
-
-  return (
+const SketchLine: React.FC<ISketchLine> = ({ id, v1, v2 }) => (
+  <>
+    <LineMeter lineId={id} v1={v1} v2={v2} />
     <Line
-      points={vertices.map((v) => v.position)}
+      points={[v1, v2]}
       lineWidth={0.8}
       color='white'
     />
-  );
-};
+  </>
+
+);
 
 export default SketchLine;

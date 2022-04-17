@@ -19,18 +19,8 @@ const NavContainer = tw.div`
 interface IToolsNavbar {}
 
 const ToolsNavbar: React.FC<IToolsNavbar> = () => {
-  const [
-    grid,
-    setGrid,
-    sketchView,
-    setSketchView,
-  ] = useGlobal((state: IGlobalStore) => (
-    [
-      state.grid,
-      state.setGrid,
-      state.sketchView,
-      state.setSketchView,
-    ]
+  const [grid, setGrid, sketchView, setSketchView] = useGlobal((state: IGlobalStore) => (
+    [state.grid, state.setGrid, state.sketchView, state.setSketchView]
   ), shallow);
   const { showAxesHelper, showGrid } = grid;
   const { isSketchView } = sketchView;
@@ -70,7 +60,7 @@ const ToolsNavbar: React.FC<IToolsNavbar> = () => {
         }}
         active={false}
       >
-        <p>Point</p>
+        <p>Line</p>
       </IconButton>
     </NavContainer>
   );
