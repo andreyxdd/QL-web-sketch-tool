@@ -2,8 +2,7 @@ import React from 'react';
 import { Canvas } from '@react-three/fiber';
 import ControlsAndCamera from './ControlsAndCamera';
 import Grid from './Grid';
-import Sketch from './Sketch/Sketch';
-import SketchPlane from './Sketch/SketchPlane';
+import Sketch from './NewSketch/NewSketch';
 import useGlobal, { IGlobalStore } from '../hooks/useGlobal';
 
 interface IWebGLCanvas {}
@@ -20,10 +19,7 @@ const WebGLCanvas: React.FC<IWebGLCanvas> = () => {
       <Grid />
       {isSketchView
         && (
-          <>
-            <Sketch />
-            <SketchPlane />
-          </>
+          <Sketch />
         )}
     </Canvas>
   );

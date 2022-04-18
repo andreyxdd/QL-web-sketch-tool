@@ -3,6 +3,7 @@ import tw from 'tailwind-styled-components';
 import shallow from 'zustand/shallow';
 import useGlobal, { IGlobalStore } from '../hooks/useGlobal';
 import useSketch, { ISketchStore } from '../hooks/useSketch';
+import useNewSketch, { INewSketchStore } from '../hooks/useNewSketch';
 import IconButton from './IconButton';
 import { IconGrid, IconSketch, IconXYZ } from './Icons';
 
@@ -25,9 +26,18 @@ const ToolsNavbar: React.FC<IToolsNavbar> = () => {
   const { showAxesHelper, showGrid } = grid;
   const { isSketchView } = sketchView;
 
-  const [createNewVertex, makeHorizontal, makeVertical] = useSketch((state: ISketchStore) => (
-    [state.createNewVertex, state.makeHorizontal, state.makeVertical]
+  const [makeHorizontal, makeVertical] = useSketch((state: ISketchStore) => (
+    [state.makeHorizontal, state.makeVertical]
   ), shallow);
+
+  const [isAddingLine, startAddingLine, stopAddingLine] = useNewSketch(
+    (state: INewSketchStore) => [
+      state.isAddingLine,
+      state.startAddingLine,
+      state.stopAddingLine,
+    ],
+    shallow,
+  );
 
   return (
     <NavContainer>
@@ -58,9 +68,13 @@ const ToolsNavbar: React.FC<IToolsNavbar> = () => {
       </IconButton>
       <IconButton
         handleClick={() => {
-          createNewVertex();
+          if (isAddingLine) {
+            stopAddingLine();
+          } else {
+            startAddingLine();
+          }
         }}
-        active={false}
+        active={isAddingLine}
       >
         <p>Line</p>
       </IconButton>
