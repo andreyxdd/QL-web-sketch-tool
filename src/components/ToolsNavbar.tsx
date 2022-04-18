@@ -30,11 +30,13 @@ const ToolsNavbar: React.FC<IToolsNavbar> = () => {
     [state.makeHorizontal, state.makeVertical]
   ), shallow);
 
-  const [isAddingLine, startAddingLine, stopAddingLine] = useNewSketch(
+  const [isAddingLine, startAddingLine, stopAddingLine, currentLineId, removeLine] = useNewSketch(
     (state: INewSketchStore) => [
       state.isAddingLine,
       state.startAddingLine,
       state.stopAddingLine,
+      state.currentLineId,
+      state.removeLine,
     ],
     shallow,
   );
@@ -70,6 +72,7 @@ const ToolsNavbar: React.FC<IToolsNavbar> = () => {
         handleClick={() => {
           if (isAddingLine) {
             stopAddingLine();
+            if (currentLineId) removeLine(currentLineId);
           } else {
             startAddingLine();
           }

@@ -18,6 +18,7 @@ interface IState {
 /* eslint-disable no-unused-vars */
 export interface INewSketchStore extends IState {
   addLine: (startPoint: Vector3, endPoint: Vector3) => void;
+  removeLine: (id: number) => void;
   updateLine: (
     id: number,
     newPosition: Vector3,
@@ -35,14 +36,19 @@ const initialState: IState = {
   currentLineId: null,
 };
 
-const useSketch = create<INewSketchStore>((set: any, get: any) => ({
+const useSketch = create<INewSketchStore>((set: any) => ({
   ...initialState,
   addLine: (startPoint: Vector3, endPoint: Vector3) => set(produce(
     (state: IState) => {
-      console.log(startPoint);
-      console.log(endPoint);
-      state.lines.push({ id: state.lines.length, startPoint, endPoint });
-      get().setCurrentLineId(state.lines.length);
+      const id = state.lines.length + 1;
+      state.lines.push({ id, startPoint, endPoint });
+      state.currentLineId = id;
+    },
+  )),
+  removeLine: (id: number) => set(produce(
+    (state: IState) => {
+      const index = state.lines.findIndex((l) => l.id === id);
+      if (index !== -1) state.lines.splice(index, 1);
     },
   )),
   updateLine: (
@@ -53,10 +59,9 @@ const useSketch = create<INewSketchStore>((set: any, get: any) => ({
     (state: IState) => {
       const { x, z } = newPosition;
       if (isStartPoint) {
-        state.lines[id].startPoint = new Vector3(x, 0, z);
+        state.lines[id - 1].startPoint = new Vector3(x, 0, z);
       } else {
-        console.log(newPosition);
-        state.lines[id].endPoint = new Vector3(x, 0, z);
+        state.lines[id - 1].endPoint = new Vector3(x, 0, z);
       }
     },
   )),

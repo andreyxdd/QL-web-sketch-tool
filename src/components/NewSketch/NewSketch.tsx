@@ -21,6 +21,8 @@ const NewSketch: React.FC<INewSketch> = () => {
     shallow,
   );
 
+  // eslint-disable-next-line no-unused-vars
+  const [previousPoint, setPreviousPoint] = React.useState<Vector3 | null>(null);
   const [isFirstPoint, setIsFirstPoint] = React.useState(true);
   const freePointRef = React.useRef<Mesh>();
 
@@ -64,14 +66,19 @@ const NewSketch: React.FC<INewSketch> = () => {
               args={[10, 10]}
               rotation={[-Math.PI / 2, 0, 0]}
               onClick={() => {
-                if (isFirstPoint) {
-                  setIsFirstPoint(false);
-                }
                 if (freePointRef.current) {
-                  addLine(
-                    freePointRef.current.position,
-                    new Vector3(0, 0, 0),
-                  );
+                  if (isFirstPoint) {
+                    addLine(
+                      freePointRef.current.position,
+                      freePointRef.current.position,
+                    );
+                    setIsFirstPoint(false);
+                  } else if (currentLineId) {
+                    addLine(
+                      lines[currentLineId - 1].endPoint,
+                      lines[currentLineId - 1].endPoint,
+                    );
+                  }
                 }
               }}
             >
