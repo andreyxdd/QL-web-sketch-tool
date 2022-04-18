@@ -1,165 +1,94 @@
+/* eslint-disable no-param-reassign */
 import create from 'zustand';
+import produce from 'immer';
 import { Vector3 } from 'three';
-
-interface IVertex {
-  id: number;
-  position: Vector3;
-}
 
 interface ILine {
   id: number;
-  startVertex: IVertex;
-  endVertex: IVertex;
+  startPoint: Vector3,
+  endPoint: Vector3
 }
 
 interface IState {
-  vertices: Array<IVertex>;
   lines: Array<ILine>;
-  creatingVertex: boolean;
+  isAddingLine: boolean;
+  currentLineId: number | null;
 }
 
 /* eslint-disable no-unused-vars */
 export interface ISketchStore extends IState {
-  updateVertexPosition: (id: number, newPosition: Vector3) => void;
-  makeHorizontal: (id: number) => void;
-  makeVertical: (id: number) => void;
+  addLine: (startPoint: Vector3, endPoint: Vector3) => void;
+  removeLine: (id: number) => void;
+  updateLine: (
+    id: number,
+    newPosition: Vector3,
+    isStartPoint?: boolean,
+  ) => void;
   updateLineLength: (id: number, newLength: number) => void;
-  setVertices: (val: Array<IVertex>) => void;
-  createNewVertex: () => void;
-  stopCreatingVertex: () => void;
+  startAddingLine: () => void;
+  stopAddingLine: () => void;
+  setCurrentLineId: (id: number) => void;
 }
 /* eslint-enable no-unused-vars */
 
-const tempVector1 = new Vector3(1, 0, -2);
-const tempVector2 = new Vector3(3, 0, -1);
 const initialState: IState = {
-  vertices: [
-    { id: 1, position: tempVector1 },
-    { id: 2, position: tempVector2 },
-  ],
-  lines: [
-    {
-      id: 1,
-      startVertex: { id: 1, position: tempVector1 },
-      endVertex: { id: 2, position: tempVector2 },
-    },
-  ],
-  creatingVertex: false,
+  lines: [],
+  isAddingLine: false,
+  currentLineId: null,
 };
 
 const useSketch = create<ISketchStore>((set: any, get: any) => ({
   ...initialState,
-  updateVertexPosition: (id: number, newPosition: Vector3) => set(
+  addLine: (startPoint: Vector3, endPoint: Vector3) => set(produce(
     (state: IState) => {
-      const vertices = state.vertices.map((v) => {
-        if (v.id === id) {
-          return {
-            ...v,
-            position: new Vector3(newPosition.x, 0, newPosition.z),
-          };
-        }
-        return v;
-      });
-
-      const lines = state.lines.map((l) => {
-        if (l.startVertex.id === id) {
-          return {
-            ...l,
-            startVertex: { id, position: new Vector3(newPosition.x, 0, newPosition.z) },
-          };
-        }
-        if (l.endVertex.id === id) {
-          return {
-            ...l,
-            endVertex: { id, position: new Vector3(newPosition.x, 0, newPosition.z) },
-          };
-        }
-        return l;
-      });
-
-      return { vertices, lines };
+      const id = state.lines.length + 1;
+      state.lines.push({ id, startPoint, endPoint });
+      state.currentLineId = id;
     },
-  ),
-  makeHorizontal: (id: number) => set(
+  )),
+  removeLine: (id: number) => set(produce(
     (state: IState) => {
-      const line = state.lines.find((l) => l.id === id);
-
-      if (line) {
-        const { startVertex, endVertex } = line;
-
-        const currentLength = startVertex.position.distanceTo(endVertex.position);
-
-        const newEndVertexPosition = new Vector3(
-          startVertex.position.x + currentLength,
-          0,
-          startVertex.position.z,
-        );
-
-        if (endVertex.position.x < startVertex.position.x) {
-          newEndVertexPosition.setComponent(0, startVertex.position.x - currentLength);
-        }
-
-        get().updateVertexPosition(endVertex.id, newEndVertexPosition);
+      const index = state.lines.findIndex((l) => l.id === id);
+      if (index !== -1) state.lines.splice(index, 1);
+    },
+  )),
+  updateLine: (
+    id: number,
+    newPosition: Vector3,
+    isStartPoint: boolean = false,
+  ) => set(produce(
+    (state: IState) => {
+      const { x, z } = newPosition;
+      if (isStartPoint) {
+        state.lines[id - 1].startPoint = new Vector3(x, 0, z);
+      } else {
+        state.lines[id - 1].endPoint = new Vector3(x, 0, z);
       }
     },
-  ),
-  makeVertical: (id: number) => set(
-    (state: IState) => {
-      const line = state.lines.find((l) => l.id === id);
-
-      if (line) {
-        const { startVertex, endVertex } = line;
-
-        const currentLength = startVertex.position.distanceTo(endVertex.position);
-
-        const newEndVertexPosition = new Vector3(
-          startVertex.position.x,
-          0,
-          startVertex.position.z + currentLength,
-        );
-
-        if (endVertex.position.z < startVertex.position.z) {
-          newEndVertexPosition.setComponent(2, startVertex.position.z - currentLength);
-        }
-
-        get().updateVertexPosition(endVertex.id, newEndVertexPosition);
-      }
-    },
-  ),
+  )),
   updateLineLength: (id: number, newLength: number) => set(
     (state: IState) => {
       const line = state.lines.find((l) => l.id === id);
 
       if (line) {
-        const { startVertex, endVertex } = line;
-
-        const currentLength = startVertex.position.distanceTo(endVertex.position);
-
+        const { startPoint, endPoint } = line;
+        const currentLength = startPoint.distanceTo(endPoint);
         const lengthChange = newLength - currentLength;
 
-        const newEndVertexPosition = new Vector3();
-        newEndVertexPosition
-          .subVectors(endVertex.position, startVertex.position)
-          .multiplyScalar(1 + (lengthChange / newEndVertexPosition.length()))
-          .add(startVertex.position);
+        // adjusting position of the end point in the given direction
+        const newEndPoint = new Vector3();
+        newEndPoint
+          .subVectors(endPoint, startPoint)
+          .multiplyScalar(1 + (lengthChange / newEndPoint.length()))
+          .add(startPoint);
 
-        get().updateVertexPosition(endVertex.id, newEndVertexPosition);
+        get().updateLine(id, newEndPoint);
       }
     },
   ),
-  setVertices: (newVertices: Array<IVertex>) => set(
-    () => ({ vertices: newVertices }),
-  ),
-  createNewVertex: () => set((state: IState) => (
-    {
-      vertices: [...state.vertices, {
-        id: state.vertices.length + 1,
-        position: [0, 0, 0],
-      }],
-      creatingVertex: true,
-    }
-  )),
-  stopCreatingVertex: () => set(() => ({ creatingVertex: false })),
+  startAddingLine: () => set({ isAddingLine: true }),
+  stopAddingLine: () => set({ isAddingLine: false }),
+  setCurrentLineId: (id: number) => set({ currentLineId: id }),
 }));
 
 export default useSketch;

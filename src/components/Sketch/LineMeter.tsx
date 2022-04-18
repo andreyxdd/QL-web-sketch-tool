@@ -13,38 +13,38 @@ const arrowColor = 0xffff00;
 
 interface ILineMeter {
   lineId: number;
-  v1: THREE.Vector3;
-  v2: THREE.Vector3;
+  startPoint: THREE.Vector3;
+  endPoint: THREE.Vector3;
 }
 
-const LineMeter: React.FC<ILineMeter> = ({ lineId, v1, v2 }) => {
+const LineMeter: React.FC<ILineMeter> = ({ lineId, startPoint, endPoint }) => {
   const {
     serifPoints, arrowDirection, lineOffsetMidPoint, lineLength,
   } = React.useMemo(() => {
     const normal = new THREE.Vector3()
-      .subVectors(v1, v2)
+      .subVectors(startPoint, endPoint)
       .applyAxisAngle(new THREE.Vector3(0, 1, 0), Math.PI * 0.5)
       .normalize();
 
     const lineMidPoint = new THREE.Vector3()
-      .subVectors(v2, v1)
+      .subVectors(endPoint, startPoint)
       .multiplyScalar(-0.5)
-      .add(v2);
+      .add(endPoint);
     const offsetMidPoint = normal.clone().setLength(h).add(lineMidPoint);
 
     const arrowDirectionVector = new THREE.Vector3()
-      .subVectors(v2, lineMidPoint);
+      .subVectors(endPoint, lineMidPoint);
 
     return {
       serifPoints: [
-        [v2, normal.clone().setLength(h).add(v2)],
-        [v1, normal.clone().setLength(h).add(v1)],
+        [endPoint, normal.clone().setLength(h).add(endPoint)],
+        [startPoint, normal.clone().setLength(h).add(startPoint)],
       ],
       arrowDirection: arrowDirectionVector.normalize(),
       lineOffsetMidPoint: offsetMidPoint,
-      lineLength: v1.distanceTo(v2),
+      lineLength: startPoint.distanceTo(endPoint),
     };
-  }, [v1, v2]);
+  }, [startPoint, endPoint]);
 
   return (
     <>

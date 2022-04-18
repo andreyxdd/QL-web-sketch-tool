@@ -2,8 +2,7 @@ import React from 'react';
 import tw from 'tailwind-styled-components';
 import shallow from 'zustand/shallow';
 import useGlobal, { IGlobalStore } from '../hooks/useGlobal';
-import useSketch, { ISketchStore } from '../hooks/useSketch';
-import useNewSketch, { INewSketchStore } from '../hooks/useNewSketch';
+import useNewSketch, { ISketchStore } from '../hooks/useSketch';
 import IconButton from './IconButton';
 import { IconGrid, IconSketch, IconXYZ } from './Icons';
 
@@ -26,12 +25,8 @@ const ToolsNavbar: React.FC<IToolsNavbar> = () => {
   const { showAxesHelper, showGrid } = grid;
   const { isSketchView } = sketchView;
 
-  const [makeHorizontal, makeVertical] = useSketch((state: ISketchStore) => (
-    [state.makeHorizontal, state.makeVertical]
-  ), shallow);
-
   const [isAddingLine, startAddingLine, stopAddingLine, currentLineId, removeLine] = useNewSketch(
-    (state: INewSketchStore) => [
+    (state: ISketchStore) => [
       state.isAddingLine,
       state.startAddingLine,
       state.stopAddingLine,
@@ -81,6 +76,7 @@ const ToolsNavbar: React.FC<IToolsNavbar> = () => {
       >
         <p>Line</p>
       </IconButton>
+      {/**
       <IconButton
         handleClick={() => {
           makeHorizontal(1);
@@ -96,7 +92,7 @@ const ToolsNavbar: React.FC<IToolsNavbar> = () => {
         active={false}
       >
         <p>Vertical</p>
-      </IconButton>
+      </IconButton> */}
     </NavContainer>
   );
 };

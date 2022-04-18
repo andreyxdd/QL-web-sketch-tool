@@ -6,18 +6,19 @@ import { helperPlane, helperPoint } from '../../utils/geometryHelpers';
 import useSketch, { ISketchStore } from '../../hooks/useSketch';
 
 interface ISketchPoint {
-  id: number;
+  lineId: number;
   position: Vector3;
+  isStartPoint?: boolean;
 }
 
-const SketchPoint: React.FC<ISketchPoint> = ({ id, position }) => {
-  const [updateVertexPosition] = useSketch((state: ISketchStore) => [state.updateVertexPosition]);
+const SketchPoint: React.FC<ISketchPoint> = ({ lineId, position, isStartPoint }) => {
+  const [updateLine] = useSketch((state: ISketchStore) => [state.updateLine]);
 
   const [hovered, setHovered] = React.useState(false);
 
   const bind = useDrag(({ event }: any) => {
     event.ray.intersectPlane(helperPlane, helperPoint);
-    updateVertexPosition(id, helperPoint);
+    updateLine(lineId, helperPoint, isStartPoint);
   }, { pointerEvents: true });
 
   React.useEffect(() => {

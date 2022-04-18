@@ -2,7 +2,7 @@ import React from 'react';
 import { Canvas } from '@react-three/fiber';
 import ControlsAndCamera from './ControlsAndCamera';
 import Grid from './Grid';
-import Sketch from './NewSketch/NewSketch';
+import Sketch from './Sketch/Sketch';
 import useGlobal, { IGlobalStore } from '../hooks/useGlobal';
 
 interface IWebGLCanvas {}
