@@ -2,7 +2,7 @@ import React from 'react';
 import shallow from 'zustand/shallow';
 import { Plane, Circle } from '@react-three/drei';
 import { useMove } from '@use-gesture/react';
-import { Mesh, Vector3 } from 'three';
+import { Mesh } from 'three';
 import useSketch, { ISketchStore } from '../../hooks/useSketch';
 import { helperPlane, helperPoint } from '../../utils/geometryHelpers';
 import SketchLine from './SketchLine';
@@ -10,19 +10,20 @@ import SketchLine from './SketchLine';
 interface INewSketch {}
 
 const NewSketch: React.FC<INewSketch> = () => {
-  const [isAddingLine, updateLine, currentLineId, lines, addLine] = useSketch(
+  const [isAddingLine,
+    updateLine,
+    currentLineId, lines, points, addLine] = useSketch(
     (state: ISketchStore) => [
       state.isAddingLine,
       state.updateLine,
       state.currentLineId,
       state.lines,
+      state.points,
       state.addLine,
     ],
     shallow,
   );
 
-  // eslint-disable-next-line no-unused-vars
-  const [previousPoint, setPreviousPoint] = React.useState<Vector3 | null>(null);
   const [isFirstPoint, setIsFirstPoint] = React.useState(true);
   const freePointRef = React.useRef<Mesh>();
 
@@ -45,8 +46,8 @@ const NewSketch: React.FC<INewSketch> = () => {
         <SketchLine
           key={l.id}
           id={l.id}
-          startPoint={l.startPoint}
-          endPoint={l.endPoint}
+          startPointId={l.startPointId}
+          endPointId={l.endPointId}
         />
       ))}
       {isAddingLine
@@ -75,8 +76,8 @@ const NewSketch: React.FC<INewSketch> = () => {
                     setIsFirstPoint(false);
                   } else if (currentLineId) {
                     addLine(
-                      lines[currentLineId - 1].endPoint,
-                      lines[currentLineId - 1].endPoint,
+                      points[lines[currentLineId - 1].endPointId - 1].position,
+                      points[lines[currentLineId - 1].endPointId - 1].position,
                     );
                   }
                 }

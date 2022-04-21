@@ -8,10 +8,13 @@ import useSketch, { ISketchStore } from '../../hooks/useSketch';
 interface ISketchPoint {
   lineId: number;
   position: Vector3;
+  setLineHovered: React.Dispatch<React.SetStateAction<boolean>>;
   isStartPoint?: boolean;
 }
 
-const SketchPoint: React.FC<ISketchPoint> = ({ lineId, position, isStartPoint }) => {
+const SketchPoint: React.FC<ISketchPoint> = ({
+  lineId, position, setLineHovered, isStartPoint,
+}) => {
   const [updateLine] = useSketch((state: ISketchStore) => [state.updateLine]);
 
   const [hovered, setHovered] = React.useState(false);
@@ -23,7 +26,8 @@ const SketchPoint: React.FC<ISketchPoint> = ({ lineId, position, isStartPoint })
 
   React.useEffect(() => {
     document.body.style.cursor = hovered ? 'crosshair' : 'auto';
-  }, [hovered]);
+    if (hovered) setLineHovered(false);
+  }, [hovered, setLineHovered]);
 
   return (
     // @ts-ignore

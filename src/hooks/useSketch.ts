@@ -3,13 +3,19 @@ import create from 'zustand';
 import produce from 'immer';
 import { Vector3 } from 'three';
 
+interface IPoint {
+  id: number,
+  position: Vector3,
+  matchingPoints: Array<number>
+}
 interface ILine {
   id: number;
-  startPoint: Vector3,
-  endPoint: Vector3
+  startPointId: number;
+  endPointId: number;
 }
 
 interface IState {
+  points: Array<IPoint>;
   lines: Array<ILine>;
   isAddingLine: boolean;
   currentLineId: number | null;
@@ -28,10 +34,12 @@ export interface ISketchStore extends IState {
   startAddingLine: () => void;
   stopAddingLine: () => void;
   setCurrentLineId: (id: number) => void;
+  addPointConstraint: (pointId1: number, pointId2: number) => void;
 }
 /* eslint-enable no-unused-vars */
 
 const initialState: IState = {
+  points: [],
   lines: [],
   isAddingLine: false,
   currentLineId: null,
@@ -39,16 +47,33 @@ const initialState: IState = {
 
 const useSketch = create<ISketchStore>((set: any, get: any) => ({
   ...initialState,
-  addLine: (startPoint: Vector3, endPoint: Vector3) => set(produce(
+  addLine: (startPointPosition: Vector3, endPointPosition: Vector3) => set(produce(
     (state: IState) => {
       const id = state.lines.length + 1;
-      state.lines.push({ id, startPoint, endPoint });
+
+      const startPointId = state.points.length + 1;
+      state.points.push({
+        id: startPointId,
+        position: startPointPosition,
+        matchingPoints: id === 1 ? [] : [startPointId - 1],
+      });
+
+      const endPointId = startPointId + 1;
+      state.points.push({
+        id: endPointId,
+        position: endPointPosition,
+        matchingPoints: [endPointId + 1],
+      });
+
+      state.lines.push({ id, startPointId, endPointId });
       state.currentLineId = id;
     },
   )),
   removeLine: (id: number) => set(produce(
     (state: IState) => {
       const index = state.lines.findIndex((l) => l.id === id);
+      state.points.pop();
+      state.points.pop();
       if (index !== -1) state.lines.splice(index, 1);
     },
   )),
@@ -59,10 +84,33 @@ const useSketch = create<ISketchStore>((set: any, get: any) => ({
   ) => set(produce(
     (state: IState) => {
       const { x, z } = newPosition;
+      const { startPointId, endPointId } = state.lines[id - 1];
+
       if (isStartPoint) {
-        state.lines[id - 1].startPoint = new Vector3(x, 0, z);
+        state.points[startPointId - 1].position = new Vector3(x, 0, z);
+
+        const { matchingPoints } = state.points[startPointId - 1];
+        if (matchingPoints) {
+          matchingPoints.forEach(
+            (pIdx: number) => {
+              if (state.points[pIdx - 1]) {
+                state.points[pIdx - 1].position = new Vector3(x, 0, z);
+              }
+            },
+          );
+        }
       } else {
-        state.lines[id - 1].endPoint = new Vector3(x, 0, z);
+        state.points[endPointId - 1].position = new Vector3(x, 0, z);
+        const { matchingPoints } = state.points[endPointId - 1];
+        if (matchingPoints) {
+          matchingPoints.forEach(
+            (pIdx: number) => {
+              if (state.points[pIdx - 1]) {
+                state.points[pIdx - 1].position = new Vector3(x, 0, z);
+              }
+            },
+          );
+        }
       }
     },
   )),
@@ -71,16 +119,18 @@ const useSketch = create<ISketchStore>((set: any, get: any) => ({
       const line = state.lines.find((l) => l.id === id);
 
       if (line) {
-        const { startPoint, endPoint } = line;
-        const currentLength = startPoint.distanceTo(endPoint);
+        const { startPointId, endPointId } = line;
+        const startPointPosition = state.points[startPointId - 1].position;
+        const endPointPosition = state.points[endPointId - 1].position;
+        const currentLength = startPointPosition.distanceTo(endPointPosition);
         const lengthChange = newLength - currentLength;
 
         // adjusting position of the end point in the given direction
         const newEndPoint = new Vector3();
         newEndPoint
-          .subVectors(endPoint, startPoint)
+          .subVectors(endPointPosition, startPointPosition)
           .multiplyScalar(1 + (lengthChange / newEndPoint.length()))
-          .add(startPoint);
+          .add(startPointPosition);
 
         get().updateLine(id, newEndPoint);
       }
@@ -89,6 +139,10 @@ const useSketch = create<ISketchStore>((set: any, get: any) => ({
   startAddingLine: () => set({ isAddingLine: true }),
   stopAddingLine: () => set({ isAddingLine: false }),
   setCurrentLineId: (id: number) => set({ currentLineId: id }),
+  addPointConstraint: (pointId1: number, pointId2: number) => set(produce((state: IState) => {
+    state.points[pointId1 - 1].matchingPoints.push(pointId1);
+    state.points[pointId2 - 1].matchingPoints.push(pointId2);
+  })),
 }));
 
 export default useSketch;
