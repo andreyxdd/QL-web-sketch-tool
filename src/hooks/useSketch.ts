@@ -34,7 +34,7 @@ export interface ISketchStore extends IState {
   updateLineLength: (id: number, newLength: number) => void;
   startAddingLine: () => void;
   stopAddingLine: () => void;
-  setCurrentLineId: (id: number) => void;
+  setCurrentLineId: (id: number | null) => void;
   addPointConstraint: (pointId1: number, pointId2: number) => void;
 }
 /* eslint-enable no-unused-vars */
@@ -156,7 +156,7 @@ const useSketch = create<ISketchStore>((set: any, get: any) => ({
   ),
   startAddingLine: () => set({ isAddingLine: true }),
   stopAddingLine: () => set({ isAddingLine: false }),
-  setCurrentLineId: (id: number) => set({ currentLineId: id }),
+  setCurrentLineId: (id: number | null) => set({ currentLineId: id }),
   addPointConstraint: (pointId1: number, pointId2: number) => set(produce((state: IState) => {
     state.points[pointId1 - 1].matchingPoints.push(pointId1);
     state.points[pointId2 - 1].matchingPoints.push(pointId2);

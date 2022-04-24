@@ -4,6 +4,7 @@ import { Plane, Circle } from '@react-three/drei';
 import { useMove } from '@use-gesture/react';
 import { Mesh } from 'three';
 import useSketch, { ISketchStore } from '../../hooks/useSketch';
+import useDidMountEffect from '../../hooks/useDidMountEffect';
 import { helperPlane, helperPoint } from '../../utils/geometryHelpers';
 import SketchLine from './SketchLine';
 
@@ -12,7 +13,7 @@ interface INewSketch {}
 const NewSketch: React.FC<INewSketch> = () => {
   const [isAddingLine,
     updateLine,
-    currentLineId, lines, points, addLine] = useSketch(
+    currentLineId, lines, points, addLine, setCurrentLineId] = useSketch(
     (state: ISketchStore) => [
       state.isAddingLine,
       state.updateLine,
@@ -20,6 +21,7 @@ const NewSketch: React.FC<INewSketch> = () => {
       state.lines,
       state.points,
       state.addLine,
+      state.setCurrentLineId,
     ],
     shallow,
   );
@@ -38,6 +40,13 @@ const NewSketch: React.FC<INewSketch> = () => {
       freePointRef.current.position.setComponent(2, z);
     }
   }, { enabled: isAddingLine });
+
+  useDidMountEffect(() => {
+    if (!isFirstPoint && !isAddingLine) {
+      setIsFirstPoint(true);
+      setCurrentLineId(null);
+    }
+  }, [isAddingLine]);
 
   return (
     // eslint-disable-next-line react/jsx-no-useless-fragment
