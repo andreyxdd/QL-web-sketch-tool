@@ -3,6 +3,7 @@ import create from 'zustand';
 import produce from 'immer';
 import { Vector3 } from 'three';
 
+const R = 0.09;
 interface IPoint {
   id: number,
   position: Vector3,
@@ -83,30 +84,47 @@ const useSketch = create<ISketchStore>((set: any, get: any) => ({
     isStartPoint: boolean = false,
   ) => set(produce(
     (state: IState) => {
-      const { x, z } = newPosition;
+      let { x, z } = newPosition;
       const { startPointId, endPointId } = state.lines[id - 1];
+      const { points } = state;
+
+      if (Math.abs(z - points[endPointId - 1].position.z) < R) {
+        z = points[endPointId - 1].position.z;
+      }
+
+      if (Math.abs(z - points[startPointId - 1].position.z) < R) {
+        z = points[startPointId - 1].position.z;
+      }
+
+      if (Math.abs(x - points[endPointId - 1].position.x) < R) {
+        x = points[endPointId - 1].position.x;
+      }
+
+      if (Math.abs(x - points[startPointId - 1].position.x) < R) {
+        x = points[startPointId - 1].position.x;
+      }
 
       if (isStartPoint) {
-        state.points[startPointId - 1].position = new Vector3(x, 0, z);
+        points[startPointId - 1].position = new Vector3(x, 0, z);
 
-        const { matchingPoints } = state.points[startPointId - 1];
+        const { matchingPoints } = points[startPointId - 1];
         if (matchingPoints) {
           matchingPoints.forEach(
             (pIdx: number) => {
-              if (state.points[pIdx - 1]) {
-                state.points[pIdx - 1].position = new Vector3(x, 0, z);
+              if (points[pIdx - 1]) {
+                points[pIdx - 1].position = new Vector3(x, 0, z);
               }
             },
           );
         }
       } else {
-        state.points[endPointId - 1].position = new Vector3(x, 0, z);
-        const { matchingPoints } = state.points[endPointId - 1];
+        points[endPointId - 1].position = new Vector3(x, 0, z);
+        const { matchingPoints } = points[endPointId - 1];
         if (matchingPoints) {
           matchingPoints.forEach(
             (pIdx: number) => {
-              if (state.points[pIdx - 1]) {
-                state.points[pIdx - 1].position = new Vector3(x, 0, z);
+              if (points[pIdx - 1]) {
+                points[pIdx - 1].position = new Vector3(x, 0, z);
               }
             },
           );

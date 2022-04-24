@@ -34,7 +34,7 @@ const SketchLine: React.FC<ISketchLine> = ({ id, startPointId, endPointId }) => 
         points={[startPointPosition, endPointPosition]}
         lineWidth={3}
         color={hovered ? 'blue' : 'white'}
-        onPointerOver={() => setHovered(true)}
+        onPointerOver={() => setHovered(false)}
         onPointerOut={() => setHovered(false)}
       />
       {/* <LineMeter lineId={id} startPoint={startPointPosition} endPoint={endPointPosition} /> */}
