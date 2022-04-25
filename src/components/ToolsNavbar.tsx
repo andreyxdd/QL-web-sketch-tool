@@ -3,6 +3,7 @@ import tw from 'tailwind-styled-components';
 import shallow from 'zustand/shallow';
 import useGlobal, { IGlobalStore } from '../hooks/useGlobal';
 import useNewSketch, { ISketchStore } from '../hooks/useSketch';
+import useSpace, { ISpaceStore } from '../hooks/useSpace';
 import IconButton from './IconButton';
 
 const NavContainer = tw.div`
@@ -33,6 +34,16 @@ const ToolsNavbar: React.FC<IToolsNavbar> = () => {
     shallow,
   );
 
+  const [isBoxVisible, isDodecahedronVisible, setIsDodecahedronVisible, setIsBoxVisible] = useSpace(
+    (state: ISpaceStore) => [
+      state.isBoxVisible,
+      state.isDodecahedronVisible,
+      state.setIsDodecahedronVisible,
+      state.setIsBoxVisible,
+    ],
+    shallow,
+  );
+
   return (
     <NavContainer>
       <IconButton
@@ -50,6 +61,30 @@ const ToolsNavbar: React.FC<IToolsNavbar> = () => {
           {isSketchView ? 'Spatial' : 'Sketch'}
           {' '}
           View
+        </p>
+      </IconButton>
+      <IconButton
+        handleClick={() => {
+          setIsBoxVisible(!isBoxVisible);
+        }}
+        active={isBoxVisible}
+      >
+        <p>
+          {isBoxVisible ? 'Hide' : 'Show'}
+          {' '}
+          Box
+        </p>
+      </IconButton>
+      <IconButton
+        handleClick={() => {
+          setIsDodecahedronVisible(!isDodecahedronVisible);
+        }}
+        active={isDodecahedronVisible}
+      >
+        <p>
+          {isDodecahedronVisible ? 'Hide' : 'Show'}
+          {' '}
+          Dodecahedron
         </p>
       </IconButton>
       {isSketchView && (
@@ -71,36 +106,6 @@ const ToolsNavbar: React.FC<IToolsNavbar> = () => {
           </p>
         </IconButton>
       )}
-
-      {/** <IconButton
-        handleClick={() => {
-          if (isExtrusionVisible) {
-            hideExtrusion();
-          } else {
-            showExtrusion();
-          }
-        }}
-        active={isExtrusionVisible}
-      >
-        <p>Show extrusion</p>
-      </IconButton>
-
-      <IconButton
-        handleClick={() => {
-          makeHorizontal(1);
-        }}
-        active={false}
-      >
-        <p>Horiz</p>
-      </IconButton>
-      <IconButton
-        handleClick={() => {
-          makeVertical(1);
-        }}
-        active={false}
-      >
-        <p>Vertical</p>
-      </IconButton> */}
     </NavContainer>
   );
 };

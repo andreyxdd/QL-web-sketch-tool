@@ -9,6 +9,8 @@ import useSpace, { ISpaceStore, useSpaceGUI } from '../hooks/useSpace';
 import { useSketchGUI } from '../hooks/useSketch';
 import Sketch from './Sketch/Sketch';
 import Extrusion from './Extrusion';
+import BoxModel from './BoxModel';
+import DodecahedronModel from './DodecahedronModel';
 
 interface IWebGLCanvas {}
 
@@ -21,7 +23,11 @@ const WebGLCanvas: React.FC<IWebGLCanvas> = () => {
   ], shallow);
   useGridGUI();
 
-  const isExtrusionVisible = useSpace((state: ISpaceStore) => state.isExtrusionVisible);
+  const [isExtrusionVisible,
+    isDragging, isBoxVisible, isDodecahedronVisible] = useSpace((state: ISpaceStore) => [
+    state.isExtrusionVisible,
+    state.isDragging, state.isBoxVisible,
+    state.isDodecahedronVisible], shallow);
   useSpaceGUI();
 
   const isSketchView = useGlobal((state: IGlobalStore) => state.isSketchView);
@@ -32,7 +38,7 @@ const WebGLCanvas: React.FC<IWebGLCanvas> = () => {
       mode='concurrent'
       className='grow'
       shadows
-      frameloop={isSketchView ? undefined : 'demand'}
+      frameloop={isSketchView || isDragging ? undefined : 'demand'}
       performance={{
         current: 1,
         min: 0.1,
@@ -41,6 +47,8 @@ const WebGLCanvas: React.FC<IWebGLCanvas> = () => {
       }}
       dpr={[1, 2]}
     >
+      {isBoxVisible && <BoxModel />}
+      {isDodecahedronVisible && <DodecahedronModel />}
       <color attach='background' args={['#041830']} />
       <ControlsAndCamera />
       <mesh visible={isAxesVisible}>

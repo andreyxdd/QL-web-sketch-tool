@@ -25,7 +25,7 @@ const SketchPoint: React.FC<ISketchPoint> = ({
   }, { pointerEvents: true });
 
   React.useEffect(() => {
-    document.body.style.cursor = hovered ? 'crosshair' : 'auto';
+    document.body.style.cursor = hovered ? 'move' : 'auto';
   }, [hovered]);
 
   return (

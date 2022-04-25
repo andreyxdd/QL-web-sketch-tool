@@ -5,24 +5,36 @@ import shallow from 'zustand/shallow';
 interface IState {
   extrusionDepth: number;
   isExtrusionVisible: boolean;
+  isDragging: boolean;
+  isDodecahedronVisible: boolean;
+  isBoxVisible: boolean;
 }
 
 /* eslint-disable no-unused-vars */
 export interface ISpaceStore extends IState{
   setExtrusionDepth: (extrusionDepth: number) => void;
   setIsExtrusionVisible: (isExtrusionVisible: boolean) => void;
+  setIsDragging: (isDragging: boolean) => void;
+  setIsDodecahedronVisible: (isDodecahedronVisible: boolean) => void;
+  setIsBoxVisible: (isBoxVisible: boolean) => void;
 }
 /* eslint-enable no-unused-vars */
 
 const initialState: IState = {
   extrusionDepth: 5,
   isExtrusionVisible: true,
+  isDragging: false,
+  isDodecahedronVisible: false,
+  isBoxVisible: false,
 };
 
 const useSpace = create<ISpaceStore>((set: any) => ({
   ...initialState,
   setExtrusionDepth: (extrusionDepth: number) => set({ extrusionDepth }),
   setIsExtrusionVisible: (isExtrusionVisible: boolean) => set({ isExtrusionVisible }),
+  setIsDragging: (isDragging: boolean) => set({ isDragging }),
+  setIsDodecahedronVisible: (isDodecahedronVisible: boolean) => set({ isDodecahedronVisible }),
+  setIsBoxVisible: (isBoxVisible: boolean) => set({ isBoxVisible }),
 }));
 
 export default useSpace;

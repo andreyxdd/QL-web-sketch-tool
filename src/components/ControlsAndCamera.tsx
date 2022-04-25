@@ -3,6 +3,7 @@ import { useThree, useFrame } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
 import shallow from 'zustand/shallow';
 import useGlobal, { IGlobalStore } from '../hooks/useGlobal';
+import useSpace, { ISpaceStore } from '../hooks/useSpace';
 
 const ControlsAndCamera = (): JSX.Element => {
   const { camera } = useThree();
@@ -10,6 +11,9 @@ const ControlsAndCamera = (): JSX.Element => {
   const [isSketchView, position] = useGlobal(
     (state: IGlobalStore) => [state.isSketchView, state.cameraPosition],
     shallow,
+  );
+  const isDragging = useSpace(
+    (state: ISpaceStore) => state.isDragging,
   );
 
   useFrame(() => controlsRef.current.update());
@@ -27,6 +31,7 @@ const ControlsAndCamera = (): JSX.Element => {
       maxPolarAngle={Math.PI / 2}
       enableRotate={!isSketchView}
       enableDamping={false}
+      enabled={!isDragging}
     />
   );
 };
