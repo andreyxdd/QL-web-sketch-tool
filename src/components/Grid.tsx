@@ -14,7 +14,7 @@ const Grid: React.FC<IGrid> = () => {
         <axesHelper />
       </mesh>
       <mesh visible={showGrid}>
-        <gridHelper args={[size, divisions, '#808080', '#181818']} />
+        <gridHelper args={[size, divisions, '#F0F0F0', '#707070']} />
       </mesh>
     </>
   );

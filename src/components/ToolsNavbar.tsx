@@ -19,8 +19,18 @@ const NavContainer = tw.div`
 interface IToolsNavbar {}
 
 const ToolsNavbar: React.FC<IToolsNavbar> = () => {
-  const [grid, setGrid, sketchView, setSketchView] = useGlobal((state: IGlobalStore) => (
-    [state.grid, state.setGrid, state.sketchView, state.setSketchView]
+  const [grid,
+    setGrid,
+    sketchView, setSketchView,
+    isExtrusionVisible, showExtrusion, hideExtrusion] = useGlobal((state: IGlobalStore) => (
+    [state.grid,
+      state.setGrid,
+      state.sketchView,
+      state.setSketchView,
+      state.isExtrusionVisible,
+      state.showExtrusion,
+      state.hideExtrusion,
+    ]
   ), shallow);
   const { showAxesHelper, showGrid } = grid;
   const { isSketchView } = sketchView;
@@ -41,6 +51,10 @@ const ToolsNavbar: React.FC<IToolsNavbar> = () => {
       <IconButton
         handleClick={() => {
           setSketchView({ ...sketchView, isSketchView: !isSketchView });
+          if (isAddingLine) {
+            stopAddingLine();
+            if (currentLineId) removeLine(currentLineId);
+          }
         }}
         active={isSketchView}
         isFirst
@@ -75,6 +89,18 @@ const ToolsNavbar: React.FC<IToolsNavbar> = () => {
         active={isAddingLine}
       >
         <p>Line</p>
+      </IconButton>
+      <IconButton
+        handleClick={() => {
+          if (isExtrusionVisible) {
+            hideExtrusion();
+          } else {
+            showExtrusion();
+          }
+        }}
+        active={isExtrusionVisible}
+      >
+        <p>Show extrusion</p>
       </IconButton>
       {/**
       <IconButton

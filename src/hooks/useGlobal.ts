@@ -17,6 +17,7 @@ interface IState {
   sketchView: ISketchView;
   cameraPosition: [number, number, number];
   sideNavbarOpened: boolean;
+  isExtrusionVisible: boolean
 }
 
 /* eslint-disable no-unused-vars */
@@ -24,6 +25,8 @@ export interface IGlobalStore extends IState{
   setGrid: (val: IGrid) => void;
   setSketchView: (val: ISketchView) => void;
   setSideNavbarOpened: (val: boolean) => void;
+  showExtrusion: () => void;
+  hideExtrusion: () => void;
 }
 /* eslint-enable no-unused-vars */
 
@@ -38,6 +41,7 @@ const initialState: IState = {
     isSketchView: false,
     yCoordinate: 10,
   },
+  isExtrusionVisible: false,
   cameraPosition: [2, 2, 2],
   sideNavbarOpened: false,
 };
@@ -57,6 +61,8 @@ const useGlobal = create<IGlobalStore>((set: any) => ({
   setSideNavbarOpened: (value: boolean) => set(
     () => ({ sideNavbarOpened: value }),
   ),
+  showExtrusion: () => set({ isExtrusionVisible: true }),
+  hideExtrusion: () => set({ isExtrusionVisible: false }),
 }));
 
 export default useGlobal;
