@@ -7,8 +7,8 @@ import useGlobal, { IGlobalStore } from '../hooks/useGlobal';
 const ControlsAndCamera = (): JSX.Element => {
   const { camera } = useThree();
   const controlsRef = React.useRef<any>();
-  const [{ isSketchView }, position] = useGlobal(
-    (state: IGlobalStore) => [state.sketchView, state.cameraPosition],
+  const [isSketchView, position] = useGlobal(
+    (state: IGlobalStore) => [state.isSketchView, state.cameraPosition],
     shallow,
   );
 

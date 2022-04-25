@@ -4,7 +4,6 @@ import shallow from 'zustand/shallow';
 import useGlobal, { IGlobalStore } from '../hooks/useGlobal';
 import useNewSketch, { ISketchStore } from '../hooks/useSketch';
 import IconButton from './IconButton';
-import { IconGrid, IconSketch, IconXYZ } from './Icons';
 
 const NavContainer = tw.div`
   flex
@@ -19,21 +18,9 @@ const NavContainer = tw.div`
 interface IToolsNavbar {}
 
 const ToolsNavbar: React.FC<IToolsNavbar> = () => {
-  const [grid,
-    setGrid,
-    sketchView, setSketchView,
-    isExtrusionVisible, showExtrusion, hideExtrusion] = useGlobal((state: IGlobalStore) => (
-    [state.grid,
-      state.setGrid,
-      state.sketchView,
-      state.setSketchView,
-      state.isExtrusionVisible,
-      state.showExtrusion,
-      state.hideExtrusion,
-    ]
+  const [isSketchView, setIsSketchView] = useGlobal((state: IGlobalStore) => (
+    [state.isSketchView, state.setIsSketchView]
   ), shallow);
-  const { showAxesHelper, showGrid } = grid;
-  const { isSketchView } = sketchView;
 
   const [isAddingLine, startAddingLine, stopAddingLine, currentLineId, removeLine] = useNewSketch(
     (state: ISketchStore) => [
@@ -50,7 +37,7 @@ const ToolsNavbar: React.FC<IToolsNavbar> = () => {
     <NavContainer>
       <IconButton
         handleClick={() => {
-          setSketchView({ ...sketchView, isSketchView: !isSketchView });
+          setIsSketchView(!isSketchView);
           if (isAddingLine) {
             stopAddingLine();
             if (currentLineId) removeLine(currentLineId);
@@ -59,38 +46,25 @@ const ToolsNavbar: React.FC<IToolsNavbar> = () => {
         active={isSketchView}
         isFirst
       >
-        <IconSketch />
+        <p>Sketch</p>
       </IconButton>
-      <IconButton
-        handleClick={() => {
-          setGrid({ ...grid, showGrid: !showGrid });
-        }}
-        active={showGrid}
-      >
-        <IconGrid />
-      </IconButton>
-      <IconButton
-        handleClick={() => {
-          setGrid({ ...grid, showAxesHelper: !showAxesHelper });
-        }}
-        active={showAxesHelper}
-      >
-        <IconXYZ />
-      </IconButton>
-      <IconButton
-        handleClick={() => {
-          if (isAddingLine) {
-            stopAddingLine();
-            if (currentLineId) removeLine(currentLineId);
-          } else {
-            startAddingLine();
-          }
-        }}
-        active={isAddingLine}
-      >
-        <p>Line</p>
-      </IconButton>
-      <IconButton
+      {isSketchView && (
+        <IconButton
+          handleClick={() => {
+            if (isAddingLine) {
+              stopAddingLine();
+              if (currentLineId) removeLine(currentLineId);
+            } else {
+              startAddingLine();
+            }
+          }}
+          active={isAddingLine}
+        >
+          <p>Add Line</p>
+        </IconButton>
+      )}
+
+      {/** <IconButton
         handleClick={() => {
           if (isExtrusionVisible) {
             hideExtrusion();
@@ -102,7 +76,7 @@ const ToolsNavbar: React.FC<IToolsNavbar> = () => {
       >
         <p>Show extrusion</p>
       </IconButton>
-      {/**
+
       <IconButton
         handleClick={() => {
           makeHorizontal(1);

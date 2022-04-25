@@ -2,6 +2,7 @@ import React from 'react';
 import tw from 'tailwind-styled-components';
 import WebGLCanvas from './components/WebGLCanvas';
 import ToolsNavbar from './components/ToolsNavbar';
+import Helper from './components/Helper';
 
 const Container = tw.div`
   flex
@@ -11,10 +12,13 @@ const Container = tw.div`
 
 function App(): JSX.Element {
   return (
-    <Container>
-      <ToolsNavbar />
-      <WebGLCanvas />
-    </Container>
+    <>
+      <Container>
+        <ToolsNavbar />
+        <WebGLCanvas />
+      </Container>
+      <Helper />
+    </>
   );
 }
 
