@@ -5,11 +5,11 @@ import MeterInput from './MeterInput';
 
 const h = 0.5;
 const serifWidth = 0.5;
-const serifColor = 'grey';
+const serifColor = '#fdfd96';
 
 const headLength = 0.12;
 const headWidth = 0.06;
-const arrowColor = 0xffff00;
+const arrowColor = '#ffff66';
 
 interface ILineMeter {
   lineId: number;

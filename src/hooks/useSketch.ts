@@ -2,8 +2,10 @@
 import create from 'zustand';
 import produce from 'immer';
 import { Vector3 } from 'three';
+import { useControls } from 'leva';
+import shallow from 'zustand/shallow';
 
-const R = 0.09;
+const R = 0.08;
 interface IPoint {
   id: number,
   position: Vector3,
@@ -20,6 +22,7 @@ interface IState {
   lines: Array<ILine>;
   isAddingLine: boolean;
   currentLineId: number | null;
+  isDimensionsVisible: boolean;
 }
 
 /* eslint-disable no-unused-vars */
@@ -36,6 +39,7 @@ export interface ISketchStore extends IState {
   stopAddingLine: () => void;
   setCurrentLineId: (id: number | null) => void;
   addPointConstraint: (pointId1: number, pointId2: number) => void;
+  setIsDimensionsVisible: (is: boolean) => void;
 }
 /* eslint-enable no-unused-vars */
 
@@ -44,6 +48,7 @@ const initialState: IState = {
   lines: [],
   isAddingLine: false,
   currentLineId: null,
+  isDimensionsVisible: false,
 };
 
 const useSketch = create<ISketchStore>((set: any, get: any) => ({
@@ -161,6 +166,21 @@ const useSketch = create<ISketchStore>((set: any, get: any) => ({
     state.points[pointId1 - 1].matchingPoints.push(pointId1);
     state.points[pointId2 - 1].matchingPoints.push(pointId2);
   })),
+  setIsDimensionsVisible: (isDimensionsVisible: boolean) => set({ isDimensionsVisible }),
 }));
 
 export default useSketch;
+
+export const useSketchGUI = (): void => {
+  const [setIsDimensionsVisible] = useSketch((state: ISketchStore) => (
+    [state.setIsDimensionsVisible]), shallow);
+  useControls('Sketch', {
+    isDimensionsVisible: {
+      value: false,
+      onChange: (newValue: boolean) => {
+        setIsDimensionsVisible(newValue);
+      },
+      label: 'Show Dimensions',
+    },
+  });
+};

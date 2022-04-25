@@ -46,7 +46,11 @@ const ToolsNavbar: React.FC<IToolsNavbar> = () => {
         active={isSketchView}
         isFirst
       >
-        <p>Sketch</p>
+        <p>
+          {isSketchView ? 'Spatial' : 'Sketch'}
+          {' '}
+          View
+        </p>
       </IconButton>
       {isSketchView && (
         <IconButton
@@ -60,7 +64,11 @@ const ToolsNavbar: React.FC<IToolsNavbar> = () => {
           }}
           active={isAddingLine}
         >
-          <p>Add Line</p>
+          <p>
+            {isAddingLine ? 'Stop adding' : 'Add'}
+            {' '}
+            Line
+          </p>
         </IconButton>
       )}
 

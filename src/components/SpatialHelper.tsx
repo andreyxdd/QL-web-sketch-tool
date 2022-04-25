@@ -1,8 +1,8 @@
 import React from 'react';
 
-interface IHelper {}
+interface ISpatialHelper {}
 
-const Helper: React.FC<IHelper> = () => {
+const SpatialHelper: React.FC<ISpatialHelper> = () => {
   const [hovered, setHovered] = React.useState(false);
 
   return (
@@ -25,7 +25,7 @@ const Helper: React.FC<IHelper> = () => {
         textAlign: 'center', fontWeight: 'bold', fontSize: 18, paddingBottom: 2,
       }}
       >
-        Mouse Controls
+        Spatial Mouse Controls
       </h4>
       <p>Right Click - Orbit</p>
       <p>Middle Click - Dolly</p>
@@ -35,4 +35,4 @@ const Helper: React.FC<IHelper> = () => {
   );
 };
 
-export default Helper;
+export default SpatialHelper;

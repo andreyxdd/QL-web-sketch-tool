@@ -6,6 +6,7 @@ import ControlsAndCamera from './ControlsAndCamera';
 import useGrid, { IGridStore, useGridGUI } from '../hooks/useGrid';
 import useGlobal, { IGlobalStore } from '../hooks/useGlobal';
 import useSpace, { ISpaceStore, useSpaceGUI } from '../hooks/useSpace';
+import { useSketchGUI } from '../hooks/useSketch';
 import Sketch from './Sketch/Sketch';
 import Extrusion from './Extrusion';
 
@@ -24,6 +25,7 @@ const WebGLCanvas: React.FC<IWebGLCanvas> = () => {
   useSpaceGUI();
 
   const isSketchView = useGlobal((state: IGlobalStore) => state.isSketchView);
+  useSketchGUI();
 
   return (
     <Canvas
