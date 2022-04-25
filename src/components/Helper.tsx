@@ -25,7 +25,7 @@ const Helper: React.FC<IHelper> = () => {
         textAlign: 'center', fontWeight: 'bold', fontSize: 18, paddingBottom: 2,
       }}
       >
-        Mouse Events
+        Mouse Controls
       </h4>
       <p>Right Click - Orbit</p>
       <p>Middle Click - Dolly</p>

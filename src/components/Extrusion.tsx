@@ -2,12 +2,13 @@ import React from 'react';
 import * as THREE from 'three';
 import shallow from 'zustand/shallow';
 import useSketch, { ISketchStore } from '../hooks/useSketch';
+import useSpace, { ISpaceStore } from '../hooks/useSpace';
 
 interface IExtrusion {}
 
 const Extrusion : React.FC<IExtrusion> = () => {
-  // eslint-disable-next-line no-unused-vars
   const [lines, points] = useSketch((state: ISketchStore) => [state.lines, state.points], shallow);
+  const depth = useSpace((state: ISpaceStore) => state.extrusionDepth);
 
   return (
     // eslint-disable-next-line react/jsx-no-useless-fragment
@@ -26,14 +27,17 @@ const Extrusion : React.FC<IExtrusion> = () => {
           -points[lineEndPointIdx].position.z,
         );
         return (
-          <mesh rotation={[-Math.PI / 2, 0, 0]} key={line.startPointId}>
+          <mesh rotation={[-Math.PI / 2, 0, 0]} key={line.startPointId} castShadow>
             <extrudeGeometry
               name='sketch-extrusion'
-              args={[lineShape, { bevelEnabled: false, depth: 5 }]}
+              args={[lineShape, { bevelEnabled: false, depth }]}
             />
-            <meshBasicMaterial
+            <meshLambertMaterial
               name='sketch-extrusion'
-              color={0xff0000}
+              color='#D3D3D3'
+              attach='material'
+              opacity={0.8}
+              transparent
             />
           </mesh>
         );
