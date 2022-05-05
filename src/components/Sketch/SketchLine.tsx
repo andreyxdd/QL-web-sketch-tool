@@ -1,5 +1,5 @@
 import React from 'react';
-import { Line } from '@react-three/drei';
+// import { Line } from '@react-three/drei';
 import shallow from 'zustand/shallow';
 import SketchPoint from './SketchPoint';
 import LineMeter from './LineMeter';
@@ -37,6 +37,11 @@ const SketchLine: React.FC<ISketchLine> = ({ id, startPointId, endPointId }) => 
     }
   }, [endPointPosition.x, endPointPosition.z, points, startPointPosition.x, startPointPosition.z]);
 
+  const onUpdate = React.useCallback(
+    (self) => self.setFromPoints([startPointPosition, endPointPosition]),
+    [startPointPosition, endPointPosition],
+  );
+
   return (
     <>
       <SketchPoint
@@ -44,11 +49,16 @@ const SketchLine: React.FC<ISketchLine> = ({ id, startPointId, endPointId }) => 
         position={startPointPosition}
         isStartPoint
       />
-      <Line
-        points={[startPointPosition, endPointPosition]}
-        lineWidth={1.5}
-        color={lineColor}
-      />
+      <line>
+        <bufferGeometry attach='geometry' onUpdate={onUpdate} />
+        <lineBasicMaterial
+          attach='material'
+          color={lineColor}
+          linewidth={6}
+          linecap='round'
+          linejoin='round'
+        />
+      </line>
       {showLineMeter
         && <LineMeter lineId={id} startPoint={startPointPosition} endPoint={endPointPosition} />}
       <SketchPoint lineId={id} position={endPointPosition} />
