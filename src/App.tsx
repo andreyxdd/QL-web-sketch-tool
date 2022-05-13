@@ -21,8 +21,12 @@ function App(): JSX.Element {
     <>
       <Container>
         <ToolsNavbar />
-        <SketchSidebarController />
-        {isSketchView && <SketchSideBar />}
+        {isSketchView && (
+          <>
+            <SketchSidebarController />
+            <SketchSideBar />
+          </>
+        )}
         <WebGLCanvas />
       </Container>
       {isSketchView ? <SketchHelper /> : <SpatialHelper />}

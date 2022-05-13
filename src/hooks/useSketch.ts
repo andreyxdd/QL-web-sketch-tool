@@ -11,7 +11,7 @@ interface IPoint {
   position: Vector3,
   matchingPoints: Array<number>
 }
-interface ILine {
+export interface ILine {
   id: number;
   startPointId: number;
   endPointId: number;
