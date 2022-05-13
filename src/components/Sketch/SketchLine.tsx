@@ -26,14 +26,14 @@ const SketchLine: React.FC<ISketchLine> = ({ id, startPointId, endPointId }) => 
     [points, endPointId],
   );
 
-  const [lineColor, setLineColor] = React.useState('#F8F8F8');
+  const [lineColor, setLineColor] = React.useState('#B8B8B8');
   React.useEffect(() => {
     if (startPointPosition.x === endPointPosition.x) {
       setLineColor('#FF5733');
     } else if (startPointPosition.z === endPointPosition.z) {
       setLineColor('#0096FF');
     } else {
-      setLineColor('#F8F8F8');
+      setLineColor('#B8B8B8');
     }
   }, [endPointPosition.x, endPointPosition.z, points, startPointPosition.x, startPointPosition.z]);
 
@@ -46,7 +46,7 @@ const SketchLine: React.FC<ISketchLine> = ({ id, startPointId, endPointId }) => 
       />
       <Line
         points={[startPointPosition, endPointPosition]}
-        lineWidth={1.5}
+        lineWidth={1.2}
         color={lineColor}
       />
       {showLineMeter

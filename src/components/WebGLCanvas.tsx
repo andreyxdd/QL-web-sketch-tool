@@ -55,7 +55,7 @@ const WebGLCanvas: React.FC<IWebGLCanvas> = () => {
         <axesHelper />
       </mesh>
       <mesh visible={isGridVisible}>
-        <gridHelper args={[size, divisions, '#F0F0F0', '#585858']} />
+        <gridHelper args={[size, divisions, '#C0C0C0', '#484848']} />
       </mesh>
       <ambientLight intensity={0.8} />
       <directionalLight

@@ -13,14 +13,15 @@ interface SidebarProps {
 // eslint-disable-next-line no-unused-vars
 const SidebarContainer = tw.div<SidebarProps>`
   absolute
-  w-[18vw]
+  w-[16vw]
   bg-slate-200
   h-full
   z-10
-  opacity-70
+  opacity-80
   ease-in-out
   duration-300
   ${(p) => (p.$show ? 'translate-x-0 ' : '-translate-x-full')}
+  overflow-auto
 `;
 
 const SketchSidebar: React.FC<ISketchSidebar> = () => {
@@ -33,53 +34,54 @@ const SketchSidebar: React.FC<ISketchSidebar> = () => {
       <h2 className='mt-24 mb-4 font-semibold text-black text-center'>
         Sketch Primitives
       </h2>
-      {points.length > 2 && lines.map((line: ILine) => (
-        <div key={line.id} className='ml-4'>
-          <p>
-            Line
-            {' '}
-            {line.id}
-            :
-          </p>
-          <div key={line.id} className='ml-4'>
+      <div className='ml-4 pb-8'>
+        {points.length > 2 && lines.map((line: ILine) => (
+          <div key={line.id}>
             <p>
-              Point
+              Line
               {' '}
-              {line.startPointId}
+              {line.id}
               :
             </p>
-            <p className='ml-6'>
-              X:
-              {' '}
-              {points[line.startPointId - 1].position.x.toFixed(2)}
-            </p>
-            <p className='ml-6'>
-              Y:
-              {' '}
-              {-points[line.startPointId - 1].position.z.toFixed(2)}
-            </p>
+            <div key={line.id} className='ml-2 grid grid-cols-3 gap-4'>
+              <p>
+                Point
+                {' '}
+                {line.startPointId}
+                :
+              </p>
+              <p>
+                X:
+                {' '}
+                {points[line.startPointId - 1].position.x.toFixed(2)}
+              </p>
+              <p>
+                Y:
+                {' '}
+                {-points[line.startPointId - 1].position.z.toFixed(2)}
+              </p>
+            </div>
+            <div key={line.id} className='ml-2 grid grid-cols-3 gap-4'>
+              <p>
+                Point
+                {' '}
+                {line.endPointId}
+                :
+              </p>
+              <p>
+                X:
+                {' '}
+                {points[line.endPointId - 1].position.x.toFixed(2)}
+              </p>
+              <p>
+                Y:
+                {' '}
+                {-points[line.endPointId - 1].position.z.toFixed(2)}
+              </p>
+            </div>
           </div>
-
-          <div key={line.id} className='ml-4'>
-            <p>
-              Point
-              {' '}
-              {line.endPointId}
-              :
-            </p>
-            <p className='ml-6'>
-              X:
-              {' '}
-              {points[line.endPointId - 1].position.x.toFixed(2)}
-            </p>
-            <p className='ml-6'>
-              Y:
-              {' '}
-              {-points[line.endPointId - 1].position.z.toFixed(2)}
-            </p>
-          </div>
-        </div>
-      ))}
+        ))}
+      </div>
     </SidebarContainer>
   );
 };
