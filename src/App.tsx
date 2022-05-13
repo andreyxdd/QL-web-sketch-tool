@@ -2,6 +2,8 @@ import React from 'react';
 import tw from 'tailwind-styled-components';
 import WebGLCanvas from './components/WebGLCanvas';
 import ToolsNavbar from './components/ToolsNavbar';
+import SketchSideBar from './components/SketchSideBar';
+import SketchSidebarController from './components/SketchSidebarController';
 import SpatialHelper from './components/SpatialHelper';
 import SketchHelper from './components/SketchHelper';
 import useGlobal, { IGlobalStore } from './hooks/useGlobal';
@@ -14,10 +16,13 @@ const Container = tw.div`
 
 function App(): JSX.Element {
   const isSketchView = useGlobal((state: IGlobalStore) => state.isSketchView);
+
   return (
     <>
       <Container>
         <ToolsNavbar />
+        <SketchSidebarController />
+        {isSketchView && <SketchSideBar />}
         <WebGLCanvas />
       </Container>
       {isSketchView ? <SketchHelper /> : <SpatialHelper />}

@@ -14,6 +14,7 @@ const NavContainer = tw.div`
   align-items-center
   bg-slate-200
   p-1
+  z-20 
 `;
 
 interface IToolsNavbar {}
