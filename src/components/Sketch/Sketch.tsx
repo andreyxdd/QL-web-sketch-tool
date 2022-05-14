@@ -68,7 +68,7 @@ const NewSketch: React.FC<INewSketch> = () => {
             <Circle
               ref={freePointRef}
               rotation={[-Math.PI / 2, 0, 0]}
-              args={[0.1, 32]}
+              args={[0.05, 16]}
             >
               <meshBasicMaterial color='hotpink' />
             </Circle>

@@ -43,7 +43,7 @@ const SketchSidebar: React.FC<ISketchSidebar> = () => {
               {line.id}
               :
             </p>
-            <div key={line.id} className='ml-2 grid grid-cols-3 gap-4'>
+            <div className='ml-2 grid grid-cols-3 gap-4'>
               <p>
                 Point
                 {' '}
@@ -61,7 +61,7 @@ const SketchSidebar: React.FC<ISketchSidebar> = () => {
                 {-points[line.startPointId - 1].position.z.toFixed(2)}
               </p>
             </div>
-            <div key={line.id} className='ml-2 grid grid-cols-3 gap-4'>
+            <div className='ml-2 grid grid-cols-3 gap-4'>
               <p>
                 Point
                 {' '}
