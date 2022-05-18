@@ -12,6 +12,7 @@ const DodecahedronModel: React.FC<IDodecahedron> = () => {
   const setIsDragging = useSpace(
     (state: ISpaceStore) => state.setIsDragging,
   );
+  const isDodecahedronVisible = useSpace((state: ISpaceStore) => state.isDodecahedronVisible);
 
   const bind = useDrag(
     ({ active, event }: any) => {
@@ -41,6 +42,7 @@ const DodecahedronModel: React.FC<IDodecahedron> = () => {
       position={[0, 1, 0]}
       onPointerOver={() => setHovered(true)}
       onPointerOut={() => setHovered(false)}
+      visible={isDodecahedronVisible}
     >
       <meshNormalMaterial attach='material' />
     </Dodecahedron>

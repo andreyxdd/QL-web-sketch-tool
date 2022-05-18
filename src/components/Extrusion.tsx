@@ -27,7 +27,11 @@ const Extrusion : React.FC<IExtrusion> = () => {
           -points[lineEndPointIdx].position.z,
         );
         return (
-          <mesh rotation={[-Math.PI / 2, 0, 0]} key={line.startPointId} castShadow>
+          <mesh
+            rotation={[-Math.PI / 2, 0, 0]}
+            key={line.startPointId}
+            castShadow
+          >
             <extrudeGeometry
               name='sketch-extrusion'
               args={[lineShape, { bevelEnabled: false, depth }]}

@@ -68,7 +68,7 @@ const SketchPoint: React.FC<ISketchPoint> = ({
           userSelect: 'none',
         }}
         distanceFactor={20}
-        position={[position.x, 0, position.z + adjustHtml]}
+        position={[position.x + adjustHtml / 2, 0, position.z + adjustHtml]}
       >
         {pointId}
       </Html>

@@ -23,11 +23,10 @@ const WebGLCanvas: React.FC<IWebGLCanvas> = () => {
   ], shallow);
   useGridGUI();
 
-  const [isExtrusionVisible,
-    isDragging, isBoxVisible, isDodecahedronVisible] = useSpace((state: ISpaceStore) => [
-    state.isExtrusionVisible,
-    state.isDragging, state.isBoxVisible,
-    state.isDodecahedronVisible], shallow);
+  const [isExtrusionVisible, isDragging] = useSpace(
+    (state: ISpaceStore) => [state.isExtrusionVisible, state.isDragging],
+    shallow,
+  );
   useSpaceGUI();
 
   const isSketchView = useGlobal((state: IGlobalStore) => state.isSketchView);
@@ -47,8 +46,8 @@ const WebGLCanvas: React.FC<IWebGLCanvas> = () => {
       }}
       dpr={[1, 2]}
     >
-      {isBoxVisible && <BoxModel />}
-      {isDodecahedronVisible && <DodecahedronModel />}
+      <BoxModel />
+      <DodecahedronModel />
       <color attach='background' args={['#041830']} />
       <ControlsAndCamera />
       <mesh visible={isAxesVisible}>
