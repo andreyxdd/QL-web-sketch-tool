@@ -47,6 +47,8 @@ const BoxModel: React.FC<IBox> = () => {
     const shape = new THREE.Shape();
 
     if (projectionRef.current) {
+      console.log(projectionRef.current.position);
+
       const xCoord = projectionRef.current.position.x;
       const yCoord = -projectionRef.current.position.z;
 
@@ -56,7 +58,7 @@ const BoxModel: React.FC<IBox> = () => {
       shape.lineTo(xCoord - boxSize / 2, yCoord + boxSize / 2);
     }
     return shape;
-  }, [projectionRef?.current?.position, isBoxVisible]);
+  }, [projectionRef?.current?.position]);
 
   return (
     <>
