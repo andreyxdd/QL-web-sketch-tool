@@ -1,8 +1,8 @@
 import React from 'react';
 import tw from 'tailwind-styled-components';
 import shallow from 'zustand/shallow';
-import useGlobal, { IGlobalStore } from '../hooks/useGlobal';
-import useSketch, { ISketchStore, ILine } from '../hooks/useSketch';
+import useGlobal, { IGlobalStore } from '../../hooks/useGlobal';
+import useSketch, { ISketchStore, ILine } from '../../hooks/useSketch';
 
 type ISketchSidebar = {}
 

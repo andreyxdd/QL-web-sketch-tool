@@ -23,13 +23,13 @@ const BoxModel: React.FC<IBox> = () => {
       setIsDragging(active);
       event.ray.intersectPlane(helperPlane, helperPoint);
 
-      if (boxRef.current && active) {
+      if (boxRef.current && active && isBoxVisible) {
         boxRef.current.position.setComponent(0, helperPoint.x);
         boxRef.current.position.setComponent(1, 1);
         boxRef.current.position.setComponent(2, helperPoint.z);
       }
 
-      if (projectionRef.current && active) {
+      if (projectionRef.current && active && isBoxVisible) {
         projectionRef.current.position.setComponent(0, helperPoint.x);
         projectionRef.current.position.setComponent(1, 0);
         projectionRef.current.position.setComponent(2, helperPoint.z);
@@ -39,13 +39,13 @@ const BoxModel: React.FC<IBox> = () => {
 
   const [hovered, setHovered] = React.useState(false);
   React.useEffect(() => {
-    document.body.style.cursor = hovered ? 'move' : 'auto';
-  }, [hovered]);
+    document.body.style.cursor = hovered && isBoxVisible ? 'move' : 'auto';
+  }, [hovered, isBoxVisible]);
 
   const projectionShape = React.useMemo(() => {
     const shape = new THREE.Shape();
 
-    if (projectionRef.current && boxRef.current) {
+    if (projectionRef.current) {
       const xCoord = projectionRef.current.position.x;
       const yCoord = -projectionRef.current.position.z;
 

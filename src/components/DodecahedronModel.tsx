@@ -23,13 +23,13 @@ const DodecahedronModel: React.FC<IDodecahedron> = () => {
       setIsDragging(active);
       event.ray.intersectPlane(helperPlane, helperPoint);
 
-      if (dodecahedronRef.current && active) {
+      if (dodecahedronRef.current && active && isDodecahedronVisible) {
         dodecahedronRef.current.position.setComponent(0, helperPoint.x);
         dodecahedronRef.current.position.setComponent(1, 2);
         dodecahedronRef.current.position.setComponent(2, helperPoint.z);
       }
 
-      if (projectionRef.current && active) {
+      if (projectionRef.current && active && isDodecahedronVisible) {
         projectionRef.current.position.setComponent(0, helperPoint.x);
         projectionRef.current.position.setComponent(1, 0);
         projectionRef.current.position.setComponent(2, helperPoint.z);
@@ -39,13 +39,13 @@ const DodecahedronModel: React.FC<IDodecahedron> = () => {
 
   const [hovered, setHovered] = React.useState(false);
   React.useEffect(() => {
-    document.body.style.cursor = hovered ? 'move' : 'auto';
-  }, [hovered]);
+    document.body.style.cursor = hovered && isDodecahedronVisible ? 'move' : 'auto';
+  }, [hovered, isDodecahedronVisible]);
 
   const projectionShape = React.useMemo(() => {
     const shape = new THREE.Shape();
 
-    if (projectionRef.current && dodecahedronRef.current) {
+    if (projectionRef.current) {
       const xCoord = projectionRef.current.position.x;
       const yCoord = -projectionRef.current.position.z;
 
