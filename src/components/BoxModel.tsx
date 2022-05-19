@@ -2,7 +2,7 @@ import React from 'react';
 import * as THREE from 'three';
 import { useDrag } from '@use-gesture/react';
 import { Mesh } from 'three';
-import { Box, Extrude } from '@react-three/drei';
+import { Box, Extrude, Html } from '@react-three/drei';
 import { helperPlane, helperPoint } from '../utils/geometryHelpers';
 import useSpace, { ISpaceStore } from '../hooks/useSpace';
 import useGlobal, { IGlobalStore } from '../hooks/useGlobal';
@@ -21,16 +21,15 @@ const BoxModel: React.FC<IBox> = () => {
   const bind = useDrag(
     ({ active, event }: any) => {
       setIsDragging(active);
+      event.ray.intersectPlane(helperPlane, helperPoint);
 
       if (boxRef.current && active) {
-        event.ray.intersectPlane(helperPlane, helperPoint);
         boxRef.current.position.setComponent(0, helperPoint.x);
         boxRef.current.position.setComponent(1, 1);
         boxRef.current.position.setComponent(2, helperPoint.z);
       }
 
       if (projectionRef.current && active) {
-        event.ray.intersectPlane(helperPlane, helperPoint);
         projectionRef.current.position.setComponent(0, helperPoint.x);
         projectionRef.current.position.setComponent(1, 0);
         projectionRef.current.position.setComponent(2, helperPoint.z);
@@ -46,9 +45,7 @@ const BoxModel: React.FC<IBox> = () => {
   const projectionShape = React.useMemo(() => {
     const shape = new THREE.Shape();
 
-    if (projectionRef.current) {
-      console.log(projectionRef.current.position);
-
+    if (projectionRef.current && boxRef.current) {
       const xCoord = projectionRef.current.position.x;
       const yCoord = -projectionRef.current.position.z;
 
@@ -57,8 +54,9 @@ const BoxModel: React.FC<IBox> = () => {
       shape.lineTo(xCoord - boxSize / 2, yCoord - boxSize / 2);
       shape.lineTo(xCoord - boxSize / 2, yCoord + boxSize / 2);
     }
+
     return shape;
-  }, [projectionRef?.current?.position]);
+  }, [projectionRef?.current]);
 
   return (
     <>
@@ -68,7 +66,7 @@ const BoxModel: React.FC<IBox> = () => {
         {...bind()}
         position={[0, 1, 0]}
         ref={boxRef}
-        args={[2, 2, 2]}
+        args={[boxSize, boxSize, boxSize]}
         onPointerOver={() => setHovered(true)}
         onPointerOut={() => setHovered(false)}
         visible={!isSketchView && isBoxVisible}
@@ -86,6 +84,15 @@ const BoxModel: React.FC<IBox> = () => {
           attach='material'
           visible={isSketchView && isBoxVisible}
         />
+        {isSketchView && isBoxVisible && (
+          <Html
+            as='div'
+            center
+            distanceFactor={20}
+          >
+            Box
+          </Html>
+        )}
       </Extrude>
     </>
   );

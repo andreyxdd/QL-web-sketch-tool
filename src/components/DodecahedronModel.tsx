@@ -1,28 +1,38 @@
 import React from 'react';
+import * as THREE from 'three';
 import { useDrag } from '@use-gesture/react';
 import { Mesh } from 'three';
-import { Dodecahedron } from '@react-three/drei';
+import { Dodecahedron, Extrude, Html } from '@react-three/drei';
 import { helperPlane, helperPoint } from '../utils/geometryHelpers';
 import useSpace, { ISpaceStore } from '../hooks/useSpace';
+import useGlobal, { IGlobalStore } from '../hooks/useGlobal';
 
 interface IDodecahedron {}
 
+const dodecahedronRadius = 2.14;
+
 const DodecahedronModel: React.FC<IDodecahedron> = () => {
   const dodecahedronRef = React.useRef<Mesh>();
-  const setIsDragging = useSpace(
-    (state: ISpaceStore) => state.setIsDragging,
-  );
+  const projectionRef = React.useRef<Mesh>();
+  const setIsDragging = useSpace((state: ISpaceStore) => state.setIsDragging);
   const isDodecahedronVisible = useSpace((state: ISpaceStore) => state.isDodecahedronVisible);
+  const isSketchView = useGlobal((state: IGlobalStore) => state.isSketchView);
 
   const bind = useDrag(
     ({ active, event }: any) => {
       setIsDragging(active);
+      event.ray.intersectPlane(helperPlane, helperPoint);
 
       if (dodecahedronRef.current && active) {
-        event.ray.intersectPlane(helperPlane, helperPoint);
         dodecahedronRef.current.position.setComponent(0, helperPoint.x);
-        dodecahedronRef.current.position.setComponent(1, 1);
+        dodecahedronRef.current.position.setComponent(1, 2);
         dodecahedronRef.current.position.setComponent(2, helperPoint.z);
+      }
+
+      if (projectionRef.current && active) {
+        projectionRef.current.position.setComponent(0, helperPoint.x);
+        projectionRef.current.position.setComponent(1, 0);
+        projectionRef.current.position.setComponent(2, helperPoint.z);
       }
     },
   );
@@ -32,20 +42,60 @@ const DodecahedronModel: React.FC<IDodecahedron> = () => {
     document.body.style.cursor = hovered ? 'move' : 'auto';
   }, [hovered]);
 
+  const projectionShape = React.useMemo(() => {
+    const shape = new THREE.Shape();
+
+    if (projectionRef.current && dodecahedronRef.current) {
+      const xCoord = projectionRef.current.position.x;
+      const yCoord = -projectionRef.current.position.z;
+
+      shape.moveTo(xCoord + dodecahedronRadius, yCoord + dodecahedronRadius);
+      shape.lineTo(xCoord + dodecahedronRadius, yCoord - dodecahedronRadius);
+      shape.lineTo(xCoord - dodecahedronRadius, yCoord - dodecahedronRadius);
+      shape.lineTo(xCoord - dodecahedronRadius, yCoord + dodecahedronRadius);
+    }
+
+    return shape;
+  }, [projectionRef?.current]);
+
   return (
-    // @ts-ignore
-    <Dodecahedron
-    // eslint-disable-next-line react/jsx-props-no-spreading
-      {...bind()}
-      ref={dodecahedronRef}
-      args={[1, 0]}
-      position={[0, 1, 0]}
-      onPointerOver={() => setHovered(true)}
-      onPointerOut={() => setHovered(false)}
-      visible={isDodecahedronVisible}
-    >
-      <meshNormalMaterial attach='material' />
-    </Dodecahedron>
+    <>
+      {/* @ts-ignore */}
+      <Dodecahedron
+        // eslint-disable-next-line react/jsx-props-no-spreading
+        {...bind()}
+        ref={dodecahedronRef}
+        args={[dodecahedronRadius, 0]}
+        position={[0, 2, 0]}
+        onPointerOver={() => setHovered(true)}
+        onPointerOut={() => setHovered(false)}
+        visible={!isSketchView && isDodecahedronVisible}
+      >
+        <meshNormalMaterial attach='material' />
+      </Dodecahedron>
+      <Extrude
+        args={[projectionShape, { bevelEnabled: false, depth: 1.e-5 }]}
+        rotation={[-Math.PI / 2, 0, 0]}
+        ref={projectionRef}
+        position={[0, 0, 0]}
+      >
+        <meshPhysicalMaterial
+          color='#3E64FF'
+          attach='material'
+          visible={isSketchView && isDodecahedronVisible}
+        />
+        {isSketchView && isDodecahedronVisible
+          && (
+            <Html
+              as='div'
+              center
+              distanceFactor={20}
+            >
+              Dodecahedron
+            </Html>
+          )}
+      </Extrude>
+    </>
   );
 };
 
