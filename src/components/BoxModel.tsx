@@ -23,16 +23,20 @@ const BoxModel: React.FC<IBox> = () => {
       setIsDragging(active);
       event.ray.intersectPlane(helperPlane, helperPoint);
 
-      if (boxRef.current && active && isBoxVisible) {
-        boxRef.current.position.setComponent(0, helperPoint.x);
-        boxRef.current.position.setComponent(1, 1);
-        boxRef.current.position.setComponent(2, helperPoint.z);
-      }
+      if (active && isBoxVisible) {
+        if (boxRef.current) {
+          boxRef.current.position.setComponent(0, helperPoint.x);
+          boxRef.current.position.setComponent(1, 1);
+          boxRef.current.position.setComponent(2, helperPoint.z);
+        }
 
-      if (projectionRef.current && active && isBoxVisible) {
-        projectionRef.current.position.setComponent(0, helperPoint.x);
-        projectionRef.current.position.setComponent(1, 0);
-        projectionRef.current.position.setComponent(2, helperPoint.z);
+        if (projectionRef.current) {
+          projectionRef.current.position.setComponent(0, helperPoint.x);
+          projectionRef.current.position.setComponent(1, 0);
+          projectionRef.current.position.setComponent(2, helperPoint.z);
+        }
+
+        document.body.style.cursor = 'move';
       }
     },
   );
@@ -74,13 +78,15 @@ const BoxModel: React.FC<IBox> = () => {
         <meshNormalMaterial attach='material' />
       </Box>
       <Extrude
-        args={[projectionShape, { bevelEnabled: false, depth: 1.e-5 }]}
+        args={[projectionShape, { bevelEnabled: false, depth: 1.e-1 }]}
         rotation={[-Math.PI / 2, 0, 0]}
         ref={projectionRef}
         position={[0, 0, 0]}
+        renderOrder={2}
       >
-        <meshPhysicalMaterial
+        <meshBasicMaterial
           color='#3E64FF'
+          depthWrite
           attach='material'
           visible={isSketchView && isBoxVisible}
         />
@@ -89,6 +95,7 @@ const BoxModel: React.FC<IBox> = () => {
             as='div'
             center
             distanceFactor={20}
+            style={{ pointerEvents: 'none' }}
           >
             Box
           </Html>

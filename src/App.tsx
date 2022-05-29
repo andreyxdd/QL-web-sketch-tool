@@ -4,7 +4,7 @@ import shallow from 'zustand/shallow';
 import WebGLCanvas from './components/WebGLCanvas';
 import ToolsNavbar from './components/ToolsNavbar';
 import SketchSideBar from './components/Sketch/SketchSidebar';
-import CollectionSidebar from './components/CollectionSidebar';
+import CollectionSidebar from './components/Collection/CollectionSidebar';
 import SidebarController from './components/SidebarController';
 import SpatialHelper from './components/SpatialHelper';
 import SketchHelper from './components/SketchHelper';

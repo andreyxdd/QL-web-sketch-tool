@@ -23,16 +23,19 @@ const DodecahedronModel: React.FC<IDodecahedron> = () => {
       setIsDragging(active);
       event.ray.intersectPlane(helperPlane, helperPoint);
 
-      if (dodecahedronRef.current && active && isDodecahedronVisible) {
-        dodecahedronRef.current.position.setComponent(0, helperPoint.x);
-        dodecahedronRef.current.position.setComponent(1, 2);
-        dodecahedronRef.current.position.setComponent(2, helperPoint.z);
-      }
+      if (active && isDodecahedronVisible) {
+        if (dodecahedronRef.current) {
+          dodecahedronRef.current.position.setComponent(0, helperPoint.x);
+          dodecahedronRef.current.position.setComponent(1, 2);
+          dodecahedronRef.current.position.setComponent(2, helperPoint.z);
+        }
 
-      if (projectionRef.current && active && isDodecahedronVisible) {
-        projectionRef.current.position.setComponent(0, helperPoint.x);
-        projectionRef.current.position.setComponent(1, 0);
-        projectionRef.current.position.setComponent(2, helperPoint.z);
+        if (projectionRef.current) {
+          projectionRef.current.position.setComponent(0, helperPoint.x);
+          projectionRef.current.position.setComponent(1, 0);
+          projectionRef.current.position.setComponent(2, helperPoint.z);
+        }
+        document.body.style.cursor = 'move';
       }
     },
   );
@@ -74,13 +77,16 @@ const DodecahedronModel: React.FC<IDodecahedron> = () => {
         <meshNormalMaterial attach='material' />
       </Dodecahedron>
       <Extrude
-        args={[projectionShape, { bevelEnabled: false, depth: 1.e-5 }]}
+        args={[projectionShape, { bevelEnabled: false, depth: 1.e-1 }]}
         rotation={[-Math.PI / 2, 0, 0]}
         ref={projectionRef}
         position={[0, 0, 0]}
+        renderOrder={2}
+        onPointerOver={() => setHovered(true)}
+        onPointerOut={() => setHovered(false)}
       >
-        <meshPhysicalMaterial
-          color='#3E64FF'
+        <meshBasicMaterial
+          color='#3E34FF'
           attach='material'
           visible={isSketchView && isDodecahedronVisible}
         />
@@ -90,6 +96,7 @@ const DodecahedronModel: React.FC<IDodecahedron> = () => {
               as='div'
               center
               distanceFactor={20}
+              style={{ pointerEvents: 'none' }}
             >
               Dodecahedron
             </Html>
