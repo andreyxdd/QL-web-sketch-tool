@@ -25,6 +25,7 @@ const DodecahedronModel: React.FC<IDodecahedron> = ({
     onPointerOver={() => setHovered(true)}
     onPointerOut={() => setHovered(false)}
     visible={isVisible}
+    frustumCulled={false}
   >
     <meshNormalMaterial attach='material' />
   </Dodecahedron>

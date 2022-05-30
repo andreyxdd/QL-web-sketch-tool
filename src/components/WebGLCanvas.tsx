@@ -3,6 +3,7 @@ import { Canvas } from '@react-three/fiber';
 import { AdaptiveDpr } from '@react-three/drei';
 import shallow from 'zustand/shallow';
 import ControlsAndCamera from './ControlsAndCamera';
+import InfiniteGridHelper from './InfiniteGridHelper';
 import useGrid, { IGridStore, useGridGUI } from '../hooks/useGrid';
 import useGlobal, { IGlobalStore } from '../hooks/useGlobal';
 import useSpace, { ISpaceStore, useSpaceGUI } from '../hooks/useSpace';
@@ -14,12 +15,7 @@ import Model from './Model';
 interface IWebGLCanvas {}
 
 const WebGLCanvas: React.FC<IWebGLCanvas> = () => {
-  const [isAxesVisible, isGridVisible, size, divisions] = useGrid((state: IGridStore) => [
-    state.isAxesVisible,
-    state.isGridVisible,
-    state.size,
-    state.divisions,
-  ], shallow);
+  const isAxesVisible = useGrid((state: IGridStore) => state.isAxesVisible);
   useGridGUI();
 
   const [isExtrusionVisible, isDragging, modelsToDisplay] = useSpace(
@@ -54,12 +50,10 @@ const WebGLCanvas: React.FC<IWebGLCanvas> = () => {
       ))}
       <color attach='background' args={['#041830']} />
       <ControlsAndCamera />
-      <mesh visible={isAxesVisible}>
+      <mesh visible={isAxesVisible} frustumCulled={false}>
         <axesHelper />
       </mesh>
-      <mesh visible={isGridVisible}>
-        <gridHelper args={[size, divisions, '#C0C0C0', '#484848']} />
-      </mesh>
+      <InfiniteGridHelper />
       <ambientLight intensity={0.8} />
       <directionalLight
         intensity={0.8}

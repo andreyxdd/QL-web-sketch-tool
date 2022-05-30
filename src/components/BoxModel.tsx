@@ -25,6 +25,7 @@ const BoxModel: React.FC<IBoxModel> = ({
     onPointerOver={() => setHovered(true)}
     onPointerOut={() => setHovered(false)}
     visible={isVisible}
+    frustumCulled={false}
   >
     <meshNormalMaterial attach='material' />
   </Box>

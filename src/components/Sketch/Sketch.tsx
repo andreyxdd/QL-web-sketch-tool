@@ -4,7 +4,6 @@ import { Plane, Circle } from '@react-three/drei';
 import { useMove } from '@use-gesture/react';
 import { Mesh } from 'three';
 import useSketch, { ISketchStore } from '../../hooks/useSketch';
-import useGrid, { IGridStore } from '../../hooks/useGrid';
 import useDidMountEffect from '../../hooks/useDidMountEffect';
 import { helperPlane, helperPoint } from '../../utils/geometryHelpers';
 import SketchLine from './SketchLine';
@@ -27,7 +26,7 @@ const NewSketch: React.FC<INewSketch> = () => {
     shallow,
   );
 
-  const planeSize = useGrid((state: IGridStore) => state.size);
+  const planeSize = 50;
 
   const [isFirstPoint, setIsFirstPoint] = React.useState(true);
   const freePointRef = React.useRef<Mesh>();

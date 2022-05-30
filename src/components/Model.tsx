@@ -93,6 +93,7 @@ const Model: React.FC<IModelComponent> = ({ name, characteristicSizes }) => {
         ref={projectionRef}
         position={[0, 0, 0]}
         renderOrder={2}
+        frustumCulled={false}
       >
         <meshBasicMaterial
           color={name === 'Box' ? '#89a0fa' : '#ef89fa'}
@@ -106,6 +107,7 @@ const Model: React.FC<IModelComponent> = ({ name, characteristicSizes }) => {
             center
             distanceFactor={20}
             style={{ pointerEvents: 'none' }}
+            frustumCulled={false}
           >
             {name}
           </Html>

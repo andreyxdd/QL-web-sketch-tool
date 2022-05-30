@@ -21,8 +21,8 @@ export interface IGridStore extends IState{
 const initialState: IState = {
   isAxesVisible: true,
   isGridVisible: true,
-  size: 20,
-  divisions: 20,
+  size: 1,
+  divisions: 10,
 };
 
 const useGrid = create<IGridStore>((set: any) => ({
@@ -43,21 +43,21 @@ export const useGridGUI = (): void => {
 
   useControls('Grid Settings', {
     Axes: {
-      value: true,
+      value: initialState.isAxesVisible,
       onChange: (newValue: boolean) => {
         setIsAxesVisible(newValue);
       },
       label: 'Show Axes',
     },
     Grid: {
-      value: true,
+      value: initialState.isGridVisible,
       onChange: (newValue: boolean) => {
         setIsGridVisible(newValue);
       },
       label: 'Show Grid',
     },
     Size: {
-      value: 20,
+      value: initialState.size,
       min: 1,
       max: 100,
       onChange: (newValue: number) => {
@@ -66,7 +66,7 @@ export const useGridGUI = (): void => {
       label: 'Size',
     },
     Divisions: {
-      value: 20,
+      value: initialState.divisions,
       min: 1,
       max: 100,
       onChange: (newValue: number) => {
