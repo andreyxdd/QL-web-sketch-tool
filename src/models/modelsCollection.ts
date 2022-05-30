@@ -1,4 +1,4 @@
-const collectionList = [
+const modelsCollection = [
   {
     name: 'Box',
     characteristicSizes: { x: 2, y: 2, z: 2 },
@@ -11,4 +11,4 @@ const collectionList = [
   },
 ];
 
-export default collectionList;
+export default modelsCollection;

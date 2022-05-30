@@ -2,9 +2,9 @@ import React from 'react';
 import tw from 'tailwind-styled-components';
 import shallow from 'zustand/shallow';
 import WebGLCanvas from './components/WebGLCanvas';
-import ToolsNavbar from './components/ToolsNavbar';
+import Navbar from './components/Navbar';
 import SketchSideBar from './components/Sketch/SketchSidebar';
-import CollectionSidebar from './components/Collection/CollectionSidebar';
+import CollectionSidebar from './components/CollectionSidebar';
 import SidebarController from './components/SidebarController';
 import SpatialHelper from './components/SpatialHelper';
 import SketchHelper from './components/SketchHelper';
@@ -31,7 +31,7 @@ function App(): JSX.Element {
   return (
     <>
       <Container>
-        <ToolsNavbar />
+        <Navbar />
         {isSketchView && (
           <>
             <SidebarController

@@ -9,8 +9,7 @@ import useSpace, { ISpaceStore, useSpaceGUI } from '../hooks/useSpace';
 import { useSketchGUI } from '../hooks/useSketch';
 import Sketch from './Sketch/Sketch';
 import Extrusion from './Extrusion';
-import BoxModel from './BoxModel';
-import DodecahedronModel from './DodecahedronModel';
+import Model from './Model';
 
 interface IWebGLCanvas {}
 
@@ -23,8 +22,8 @@ const WebGLCanvas: React.FC<IWebGLCanvas> = () => {
   ], shallow);
   useGridGUI();
 
-  const [isExtrusionVisible, isDragging] = useSpace(
-    (state: ISpaceStore) => [state.isExtrusionVisible, state.isDragging],
+  const [isExtrusionVisible, isDragging, modelsToDisplay] = useSpace(
+    (state: ISpaceStore) => [state.isExtrusionVisible, state.isDragging, state.modelsToDisplay],
     shallow,
   );
   useSpaceGUI();
@@ -46,8 +45,13 @@ const WebGLCanvas: React.FC<IWebGLCanvas> = () => {
       }}
       dpr={[1, 2]}
     >
-      <BoxModel />
-      <DodecahedronModel />
+      {modelsToDisplay && modelsToDisplay.map((model) => (
+        <Model
+          key={`${model.name}-${model.id}`}
+          name={model.name}
+          characteristicSizes={model.characteristicSizes}
+        />
+      ))}
       <color attach='background' args={['#041830']} />
       <ControlsAndCamera />
       <mesh visible={isAxesVisible}>

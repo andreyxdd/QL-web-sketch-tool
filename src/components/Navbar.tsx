@@ -2,8 +2,8 @@ import React from 'react';
 import tw from 'tailwind-styled-components';
 import shallow from 'zustand/shallow';
 import useGlobal, { IGlobalStore } from '../hooks/useGlobal';
-import useNewSketch, { ISketchStore } from '../hooks/useSketch';
 import useSpace, { ISpaceStore } from '../hooks/useSpace';
+import useNewSketch, { ISketchStore } from '../hooks/useSketch';
 import IconButton from './IconButton';
 
 const NavContainer = tw.div`
@@ -17,9 +17,9 @@ const NavContainer = tw.div`
   z-20 
 `;
 
-interface IToolsNavbar {}
+interface INavbar {}
 
-const ToolsNavbar: React.FC<IToolsNavbar> = () => {
+const Navbar: React.FC<INavbar> = () => {
   const [isSketchView, setIsSketchView] = useGlobal((state: IGlobalStore) => (
     [state.isSketchView, state.setIsSketchView]
   ), shallow);
@@ -35,15 +35,7 @@ const ToolsNavbar: React.FC<IToolsNavbar> = () => {
     shallow,
   );
 
-  const [isBoxVisible, isDodecahedronVisible, setIsDodecahedronVisible, setIsBoxVisible] = useSpace(
-    (state: ISpaceStore) => [
-      state.isBoxVisible,
-      state.isDodecahedronVisible,
-      state.setIsDodecahedronVisible,
-      state.setIsBoxVisible,
-    ],
-    shallow,
-  );
+  const modelsToDisplay = useSpace((state: ISpaceStore) => state.modelsToDisplay);
 
   return (
     <NavContainer>
@@ -64,30 +56,20 @@ const ToolsNavbar: React.FC<IToolsNavbar> = () => {
           View
         </p>
       </IconButton>
-      <IconButton
-        handleClick={() => {
-          setIsBoxVisible(!isBoxVisible);
-        }}
-        active={isBoxVisible}
-      >
+      <div className='p-2 border-gray-700 border-r border-y'>
         <p>
-          {isBoxVisible ? 'Hide' : 'Show'}
+          Boxes count:
           {' '}
-          Box
+          {modelsToDisplay.filter((m) => m.name === 'Box').length}
         </p>
-      </IconButton>
-      <IconButton
-        handleClick={() => {
-          setIsDodecahedronVisible(!isDodecahedronVisible);
-        }}
-        active={isDodecahedronVisible}
-      >
+      </div>
+      <div className='p-2 border-gray-700 border-r border-y'>
         <p>
-          {isDodecahedronVisible ? 'Hide' : 'Show'}
+          Dodecahedrons count:
           {' '}
-          Dodecahedron
+          {modelsToDisplay.filter((m) => m.name === 'Dodecahedron').length}
         </p>
-      </IconButton>
+      </div>
       {isSketchView && (
         <IconButton
           handleClick={() => {
@@ -111,4 +93,4 @@ const ToolsNavbar: React.FC<IToolsNavbar> = () => {
   );
 };
 
-export default ToolsNavbar;
+export default Navbar;
