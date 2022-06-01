@@ -58,10 +58,15 @@ const useSketch = create<ISketchStore>((set: any, get: any) => ({
       const id = state.lines.length + 1;
 
       const startPointId = state.points.length + 1;
+      const isMatchingPreviousPoint = state
+        .points[startPointId - 2]
+        ?.matchingPoints
+        .includes(id);
+
       state.points.push({
         id: startPointId,
         position: startPointPosition,
-        matchingPoints: id === 1 ? [] : [startPointId - 1],
+        matchingPoints: id >= 1 && !isMatchingPreviousPoint ? [] : [startPointId - 1],
       });
 
       const endPointId = startPointId + 1;
@@ -78,6 +83,7 @@ const useSketch = create<ISketchStore>((set: any, get: any) => ({
   removeLine: (id: number) => set(produce(
     (state: IState) => {
       const index = state.lines.findIndex((l) => l.id === id);
+      state.points[state.lines[index - 1].endPointId - 1].matchingPoints = [];
       state.points.pop();
       state.points.pop();
       if (index !== -1) state.lines.splice(index, 1);
