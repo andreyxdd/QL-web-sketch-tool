@@ -16,11 +16,12 @@ const PointField: React.FC<IPointField> = ({ pointId, lineId, isStartPoint }) =>
   );
 
   const [pointX, setPointX] = React.useState(points[pointId - 1].position.x);
-  const [pointY, setPointY] = React.useState(-points[pointId - 1].position.z);
+  const [pointY, setPointY] = React.useState(points[pointId - 1].position.z);
 
   React.useEffect(() => {
     setPointX(points[pointId - 1].position.x);
-    setPointY(-points[pointId - 1].position.z);
+    setPointY(points[pointId - 1].position.z);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [points[pointId - 1].position]);
 
   const handleChange = (
@@ -84,7 +85,7 @@ const PointField: React.FC<IPointField> = ({ pointId, lineId, isStartPoint }) =>
           type='number'
           id={`point-${pointId}-y`}
           name='point-y-position'
-          value={pointY.toFixed(2)}
+          value={-pointY.toFixed(2)}
           onChange={(e) => handleChange(e, 'y')}
         />
       </div>
