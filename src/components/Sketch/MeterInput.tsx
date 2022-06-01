@@ -49,10 +49,10 @@ const MeterInput: React.FC<ILineMeter> = ({ lineId, value }) => {
   return (
     <Html as='div' center style={{ background: 'white', minWidth: 24 }}>
       <input
-        type='text'
+        type='number'
         value={inputValue}
         style={{
-          width: `${inputValue.length}ch`,
+          width: `${inputValue.length + 2}ch`,
           display: 'block',
           margin: 'auto',
         }}
