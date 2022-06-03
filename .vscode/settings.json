@@ -2,7 +2,7 @@
   "files.autoSave": "onFocusChange",
   "editor.fontLigatures": true,
   "editor.fontFamily": "Fira Code SemiBold, Consolas, 'Courier New', monospace",
-  "editor.fontSize": 20,
+  "editor.fontSize": 18,
   "editor.wordWrap": "wordWrapColumn",
   "editor.tabSize": 2,
   "editor.codeActionsOnSave": { "source.fixAll.eslint": true },
@@ -49,5 +49,18 @@
     "test/**/__snapshots__": true,
     "package-lock.json": true,
     "*.{css,sass,scss}.d.ts": true
-  }
+  },
+
+  "tailwindCSS.includeLanguages": {
+    "typescript": "javascript", // if you are using typescript
+    "typescriptreact": "javascript"  // if you are using typescript with react
+  },
+  "editor.quickSuggestions": {
+    "strings": true // forces VS Code to trigger completions when editing "string" content
+  },
+  "tailwindCSS.experimental.classRegex": [
+    "tw`([^`]*)", // tw`...`
+    "tw\\.[^`]+`([^`]*)`", // tw.xxx<xxx>`...`
+    "tw\\(.*?\\).*?`([^`]*)" // tw(Component)<xxx>`...`
+  ]
 }
